@@ -85,10 +85,10 @@ OnFirstBoot
 	locationcode = ""
 	
 	//settings
-	weathermenu = "OFF"
+	//weathermenu = "OFF"
 	spookystuff = "OFF"
 	intalkconfig = 0
-	weatherquiet = 0
+	//weatherquiet = 0
 	nightmode = "OFF"
 	
 	//reset creepymode
@@ -307,7 +307,7 @@ OnBoot
 	
 	//variables for adjusting output of weather function
 	intalkconfig = 0
-	weatherquiet = 0
+	//weatherquiet = 0
 	
 	//cancel out pomo stuff
 	pomoOn = 0

@@ -82,9 +82,9 @@ MenuRun
  	\![*]\q[Nevermind,CANCEL]\n\n[half]%(wd) %(nowhour):%(nowmin) %(_ap),\n%(month).%(day).%(year)"
 	
 	--
-	if weathermenu == "ON" {
-		"\n\n[half]%(currentweatherarray[0])%(currentweatherarray[1]), %(currentweatherarray[5])"
-	}
+	// if weathermenu == "ON" {
+		// "\n\n[half]%(currentweatherarray[0])%(currentweatherarray[1]), %(currentweatherarray[5])"
+	// }
 	--
 	"\e"
 	//These three lead to the Config Menu, the Function menu, and Cancel. You can leave these alone if you like. All the envelopes at the end (see word.dic) basically display the year, month, day, weekday, and time.
@@ -293,7 +293,7 @@ TalkConfig
 	--
 	"\![*]Enable horror content? (Now: %(spookystuff))\n\q[ON,spookyon] \q[OFF,spookyoff]\n\n[half]"
 	--
-	"\![*]Weather on main menu? (Now: %(weathermenu))\n\q[ON,weatheron] \q[OFF,weatheroff]\n\n[half]"
+	// "\![*]Weather on main menu? (Now: %(weathermenu))\n\q[ON,weatheron] \q[OFF,weatheroff]\n\n[half]"
 	--
 	"\![*]Enable night mode? (Now: %(nightmode))\n\q[ON,nighton] \q[OFF,nightoff]\n/
 	\f[color,gray]Aurora won't bug you to go to bed\f[color,default]\n\n[half]"
@@ -386,23 +386,23 @@ Select.nightoff
 }
 
 //if weather location not set yet the user needs to set their location
-Select.weatheron
-{
-	weathermenu = "ON"
-	if locationcode == "" {
-		intalkconfig = 1
-		"It looks like you haven't set your location for weather yet.\w8 Let's do that real quick\x\![raise,OnWeatherLocation,]"
-	} else {
-		TalkConfig
-	}
+// Select.weatheron
+// {
+	// weathermenu = "ON"
+	// if locationcode == "" {
+		// intalkconfig = 1
+		// "It looks like you haven't set your location for weather yet.\w8 Let's do that real quick\x\![raise,OnWeatherLocation,]"
+	// } else {
+		// TalkConfig
+	// }
 
-}
+// }
 
-Select.weatheroff
-{
-	weathermenu = "OFF"
-	TalkConfig
-}
+// Select.weatheroff
+// {
+	// weathermenu = "OFF"
+	// TalkConfig
+// }
 
 //This next set of functions handles inputting the user's birthday.
 

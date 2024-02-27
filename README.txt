@@ -37,6 +37,9 @@ f1 - Open this readme
 
 Version History
 
+02.27.24
+	Administrative stuff
+		Disabling weather for now. Will be updated in the future to use Zi's weather station plugin.
 10.20.20 v1.2
 	Bug fixes
 		Weather

@@ -632,19 +632,19 @@ OnMinuteChange
 		}
 		
 		//check weather on the half hour
-		if minute == 30 && weathermenu == "ON" {
+		// if minute == 30 && weathermenu == "ON" {
 		
-			weatherquiet = 1
-			"\b[-1]\![execute,http-get,https://weather.com/weather/today/l/%(locationcode),--async=OnCurWeatherFound,--file=weather.html,--timeout=200,--nodescript]"
+			// weatherquiet = 1
+			// "\b[-1]\![execute,http-get,https://weather.com/weather/today/l/%(locationcode),--async=OnCurWeatherFound,--file=weather.html,--timeout=200,--nodescript]"
 			
-		}
+		// }
 
 		if minute == 0 //These check what time it is. Here, it's seeing if the minute equals zero...
 		{
-			if weathermenu == "ON" {
-				weatherquiet = 1
-				"\b[-1]\![execute,http-get,https://weather.com/weather/today/l/%(locationcode),--async=OnCurWeatherFound,--file=weather.html,--timeout=200,--nodescript]"
-			}
+			// if weathermenu == "ON" {
+				// weatherquiet = 1
+				// "\b[-1]\![execute,http-get,https://weather.com/weather/today/l/%(locationcode),--async=OnCurWeatherFound,--file=weather.html,--timeout=200,--nodescript]"
+			// }
 			
 			if hour == 12 //And the hour equals 12, ie it's noon. You can change this to some other hour if you want.
 			{
