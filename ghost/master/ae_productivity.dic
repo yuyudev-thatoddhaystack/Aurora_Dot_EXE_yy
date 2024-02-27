@@ -1,0 +1,1157 @@
+//**********************  Productivity Menu Stuff  ******************************************
+
+OnProduMenu{
+	"\0\s[0]\b2I wanted to call this category lifestyle, but that feels kinda cheesy :P\n\n[half]"
+	"\0\s[0]\b2Time to get to work!\n\n[half]"
+	--
+		
+	"\![*]\q[Reminders,reminders]\n/
+	\![*]\q[Work Timer,OnPomodoro]\n/
+	\![*]\q[Calculator,calctime]\n\n[half]"
+	--
+	"\![*]\q[Back to the main menu,OnBACKTOMENU]\e"
+
+}
+
+//*****************************  Reminders  *************************************************
+
+Select.reminders{
+	
+	"\0\s[0]\b2What do you want me to remind you about?\n\n[half]"
+	--
+	"\![*]\q[Sleep time,sleepremind]\n/
+	\![*]\q[Medicine,medremind]\n/
+	\![*]\q[Other,otherremind]\n\n[half]"
+	--
+	"\_q\0\s[0]Back to...\n\n[half]"
+	--
+	"\![*]\q[Productivity menu,OnProduMenu]\n/
+	\![*]\q[Main menu,OnBACKTOMENU]\e"
+
+}
+
+//*****************************  Sleep Reminders  *************************************************
+//vaguely inspired by sleepyti.me
+Select.sleepremind{
+	
+	if (sleeptimereminder) {
+	
+		_tempampm = ''
+		
+		if (gotobedampm) {
+			_tempampm = "PM"
+		} else {
+			_tempampm = "AM"
+		}
+		
+		
+		"\0\s[0]\b2Oh!\w4 You have a sleep reminder already on, for %(gotobedhour):%(gotobedmin) %(_tempampm)!\w4 Would you like to cancel the reminder or change it?\n\n[half]"
+		--
+		"\_q\![*]\q[Cancel reminder,sleepcancel]\n/
+		\![*]\q[Change reminder,sleepchange]\n\n[half]"
+		--
+		"\0\s[0]Nevermind, back to...\n\n[half]"
+		--
+		"\![*]\q[Productivity menu,OnProduMenu]\n/
+		\![*]\q[Main menu,OnBACKTOMENU]\e"
+	
+	} else {
+	
+		wakehour = 0
+		wakemin = 0
+		wakeampm = -1
+		
+		--
+		"\0\s[0]Ok! Please give me the time you want to wake up, formatted like xx:xx:am\n\n[half]"
+		
+		--
+		"\![open,inputbox,OnSetWakeUp,-1]"
+	}
+
+}
+
+//cancel sleep time reminder
+Select.sleepcancel{
+	
+	sleeptimereminder = 0 
+	
+	"\0\s[0]Got it! Canceled your sleep reminder.\n\n[half]"
+	
+	--
+	"\_q\0\s[0]Back to...\n\n[half]"
+	--
+	"\![*]\q[Productivity menu,OnProduMenu]\n/
+	\![*]\q[Main menu,OnBACKTOMENU]\e"
+	
+	
+}
+
+//change sleeptime reminder
+Select.sleepchange{
+
+	sleeptimereminder = 0 //just to cover bases :V
+	wakehour = 0
+	wakemin = 0
+	wakeampm = -1
+	
+	--
+	"\0\s[0]Gotcha, I'll change your reminder. First, please give me the time you want to wake up, formatted like xx:xx:am\n\n[half]"
+	
+	--
+	"\![open,inputbox,OnSetWakeUp,-1]"
+
+}
+
+
+OnSetWakeUp{
+	
+	_wakearray = SPLIT(reference0, ':')
+	//"Printing wake array: %(wakearray[0]), %(wakearray[1]) \x"
+	--
+	//make sure 2 numbers were entered and that they both are ints + am or pm follows it
+	//this if statement is literally so ugly im sorry
+	if (ARRAYSIZE(_wakearray) != 3) || !(ISINTSTR(_wakearray[0]+'')) || !(ISINTSTR(_wakearray[1]+'')) || !(TOLOWER(_wakearray[2]) == "am" || TOLOWER(_wakearray[2]) == "pm") {
+		
+		"\0\s[8]Hmm... are you sure you gave me a correctly formatted time?\![open,inputbox,OnSetWakeUp,-1]\e"
+	
+	}
+	--
+	wakehour = TOINT(_wakearray[0])
+	wakemin = TOINT(_wakearray[1])
+	
+	if (TOLOWER(_wakearray[2]) == "am") {
+		wakeampm = 0 //am
+	} else { //pm
+		wakeampm = 1
+	}
+	
+	//make sure times are real times
+	if (wakehour > 12 || wakehour < 1) || (wakemin > 59 || wakemin < 0) {
+	
+		"\s[3]I don't think that time exists... Try again.\![open,inputbox,OnSetWakeUp,-1]\e"
+	}
+	--
+	
+	if (wakeampm) {
+	
+		"\0\s[0]I have %(wakehour):%(wakemin) PM as your wake up time.\w8 How long do you want to sleep? Format it the same way: hours:minutes.\![open,inputbox,OnSetSleepAmount,-1]\e"
+	} else {
+		"\0\s[0]I have %(wakehour):%(wakemin) AM as your wake up time.\w8 How long do you want to sleep? Format it the same way: hours:minutes.\![open,inputbox,OnSetSleepAmount,-1]\e"
+	}
+	
+	
+}
+
+//sort of same checks as OnSetWakeUp
+OnSetSleepAmount{
+	_sleeparray = SPLIT(reference0, ':')
+	//"Printing sleep array: %(_sleeparray[0]), %(_sleeparray[1]) \x"
+	--
+	//make sure 2 numbers were entered and that they both are ints. could default to just 1 number is hour buttttt 
+	//keep it simple (shrugs)
+	if (ARRAYSIZE(_sleeparray) != 2) || !(ISINTSTR(_sleeparray[0]+'')) || !(ISINTSTR(_sleeparray[1]+'')) {
+		
+		"\0\s[8]Hmm... are you sure you gave me hours and minutes?\![open,inputbox,OnSleepAmount,-1]\e"
+	
+	}
+	--
+	sleephour = TOINT(_sleeparray[0])
+	sleepmin = TOINT(_sleeparray[1])
+	
+	//aurora won't let you sleep more than 12 hours... makes calculations easier SRRY
+	if (sleephour > 12) {
+		
+		"\0\s[3]Hey, %(username), %(sleephour) hours is a really long time... Maybe try something shorter ;w;\![open,inputbox,OnSleepAmount,-1]\e"
+		
+	}
+	--
+	//0 hours is ok i guess. but not negative
+	if (sleephour < 0) {
+	
+		"\0\s[0]You can't sleep for negative hours, silly!\![open,inputbox,OnSleepAmount,-1]\e"
+	
+	}
+	--
+	//make sure minutes are valid
+	if (sleepmin > 59 || sleepmin < 0) {
+	
+		"\0\s[8]Hmm... your minutes seem off... Try again.\![open,inputbox,OnSetSleepAmount,-1]\e"
+	}
+	--
+	OnSleepCalc
+}
+
+
+//ampm { if hour >= 12; 1;   else; 0    }
+OnSleepCalc{
+	
+	gotobedhour = -1
+	gotobedmin = -1
+	gotobedampm = -1
+	
+	//minute calculation
+	if ((wakemin - sleepmin) < 0){
+		
+		sleephour++ //need to make up for the carry hour somewhere so.... here?
+		gotobedmin = (wakemin-sleepmin) + 60
+		
+	} else {//0 minutes is OK 
+	
+		gotobedmin = wakemin-sleepmin
+	
+	}
+	--
+	//lazy calculation for time
+	if ((wakehour - sleephour) < 0){
+	
+		gotobedhour = (wakehour-sleephour) + 12
+		gotobedampm = !wakeampm
+	
+	} elseif ((wakehour - sleephour) == 0) {
+	
+		gotobedhour = 12
+		
+		if (wakeampm) {
+			gotobedampm = 1
+		} else {
+			gotobedampm = 0
+		}
+	
+	} else { //wakehour - sleephour > 0 {
+	
+		gotobedhour = (wakehour - sleephour)
+		
+		gotobedampm = wakeampm
+	
+	}
+	
+	--
+	sleeptimereminder = 1 
+	
+	//formatting stuffs
+	if gotobedmin < 10 {
+	
+		gotobedmin = "0" + gotobedmin
+	}
+	
+	if (gotobedampm) {
+	
+		"\0\s[0]\b2I've recorded your bedtime as %(gotobedhour):%(gotobedmin) PM!\w8 I'll remind you then to go to sleep!\n\n[half]"
+	} else {
+		"\0\s[0]\b2I've recorded your bedtime as %(gotobedhour):%(gotobedmin) AM!\w8 I'll remind you then to go to sleep!\n\n[half]"
+	}
+	
+	--
+	
+	"\_q\0\s[0]Back to...\n\n[half]"
+	--
+	"\![*]\q[Reminders menu,reminders]\n/
+	\![*]\q[Productivity menu,OnProduMenu]\n/
+	\![*]\q[Main menu,OnBACKTOMENU]\e"
+
+	
+	
+}
+
+//***************************** Med Reminders  *************************************************
+
+Select.medremind{
+
+	_tempmedoneampm = ""
+	_tempmedtwoampm = ""
+	
+	//im feral
+	if (medoneampm) {
+		_tempmedoneampm = "PM"
+	} else {
+		_tempmedoneampm = "AM"
+	}
+	
+	--
+	
+	if (medtwoampm) {
+		_tempmedtwoampm = "PM"
+	} else {
+		_tempmedtwoampm = "AM"
+	}
+	
+	--
+	
+	if medonereminder && medtworeminder{
+		
+		"\0\s[0]\b2It looks like you have two medicine reminders already.\w8 Did you want to cancel or change either one of them?\n\n[half]"
+		--
+		"\_qCancel...\n\n[half]"
+		--
+		"\![*]\q[%(medonehour):%(medonemin) %(_tempmedoneampm) one,cancelone]\n/
+		\![*]\q[%(medtwohour):%(medtwomin) %(_tempmedtwoampm) one,canceltwo]\n\n[half]"
+		--
+		"Change...\n\n[half]"
+		--
+		"\![*]\q[%(medonehour):%(medonemin) %(_tempmedoneampm) one,changeone]\n/
+		\![*]\q[%(medtwohour):%(medtwomin) %(_tempmedtwoampm) reminder,changetwo]\n\n[half]"
+				
+	} elseif medonereminder {
+		
+		"\0\s[0]\b2It looks like you have a medicine reminder already.\w8 Did you want to cancel or change it?\w8 Or maybe add a second one?\n\n[half]"
+		--
+		"\_q\![*]\q[Cancel %(medonehour):%(medonemin) %(_tempmedoneampm) one,cancelone]\n/
+		\![*]\q[Change %(medonehour):%(medonemin) %(_tempmedoneampm) one,changeone]\n/
+		\![*]\q[Add another reminder, addtwo]\n\n[half]"
+		--
+		
+	} elseif medtworeminder {
+		
+		"\0\s[0]\b2It looks like you have a medicine reminder already.\w8 Did you want to cancel or change it?\w8 Or maybe add a second one?\n\n[half]"
+		--
+		"\_q\![*]\q[Cancel %(medtwohour):%(medtwomin) %(_tempmedtwoampm) one,canceltwo]\n/
+		\![*]\q[Change %(medtwohour):%(medtwomin) %(_tempmedtwoampm) one,changetwo]\n/
+		\![*]\q[Add another reminder, addone]\n\n[half]"
+		--
+	
+	} else { //no current med reminders
+	
+		"\0\s[0]\b2I can remind you to take your meds!\w8 Well... at least once or twice a day I can.\w8 Go bug Vita if you want more.\n\n[half]"
+		--
+		"\_q\![*]\q[Once a day,oncemeds]\n/
+		\![*]\q[Twice a day,twicemeds]\n\n[half]"
+		
+	}
+	
+	--
+	"\_q\0\s[0]Back to...\n\n[half]"
+	--
+	"\![*]\q[Reminders menu,reminders]\n/
+	\![*]\q[Productivity menu,OnProduMenu]\n/
+	\![*]\q[Main menu,OnBACKTOMENU]\e"
+
+}
+
+
+Select.oncemeds{
+	
+	medonereminder = 1;
+	changeboth = 0;
+	
+	"\0\s[0]Ok!\w8 Just give me the time you want me to remind you to take your meds, formatted like hours:minutes:am (or pm)"
+	
+	--
+	
+	"\![open,inputbox,OnMedOneSet,-1]"
+
+}
+
+Select.twicemeds{
+	
+	medonereminder = 1;
+	medtworeminder = 1;
+	changeboth = 1;
+	
+	"\0\s[5]Okie～\w8 Just give me the first time you want me to remind you to take your meds, formatted like: hours:minutes:am (or pm)"
+	
+	--
+	
+	"\![open,inputbox,OnMedOneSet,-1]"
+}
+
+Select.cancelone{
+	
+	medoneampm = -1
+	medonehour = -1
+	medonemin = -1
+	medonereminder = 0
+	
+	"\0\s[0]Alright, canceled that reminder.\n\n[half]"
+	
+	--
+			
+	"\_q\0\s[0]Back to...\n\n[half]"
+	--
+	"\![*]\q[Reminders menu,reminders]\n/
+	\![*]\q[Productivity menu,OnProduMenu]\n/
+	\![*]\q[Main menu,OnBACKTOMENU]\e"
+
+}
+
+Select.canceltwo{
+	
+	medtwoampm = -1
+	medtwohour = -1
+	medtwomin = -1
+	medtworeminder = 0
+	
+	"\0\s[0]Alright, canceled that reminder.\n\n[half]"
+	
+	--
+			
+	"\_q\0\s[0]Back to...\n\n[half]"
+	--
+	"\![*]\q[Reminders menu,reminders]\n/
+	\![*]\q[Productivity menu,OnProduMenu]\n/
+	\![*]\q[Main menu,OnBACKTOMENU]\e"
+
+}
+
+Select.changeone{
+	changeboth = 0
+	
+	"\0\s[0]Ok!\w8 Just give me the new time you want me to remind you to take your meds, formatted like hours:minutes:am (or pm)"
+	
+	--
+	
+	"\![open,inputbox,OnMedOneSet,-1]"
+
+}
+
+Select.changetwo{
+	changeboth = 0
+	
+	"\0\s[0]Ok!\w8 Just give me the new time you want me to remind you to take your meds, formatted like hours:minutes:am (or pm)"
+	
+	--
+	
+	"\![open,inputbox,OnMedTwoSet,-1]"
+
+
+}
+
+Select.addone{
+	changeboth = 0
+	
+	"\0\s[5]Alrighty～\w8 Just give me the time you want me to remind you to take your meds, formatted like hours:minutes:am (or pm)"
+	
+	--
+	
+	"\![open,inputbox,OnMedOneSet,-1]"
+
+}
+
+Select.addtwo{
+	
+	changeboth = 0
+	
+	"\0\s[5]Alrighty～\w8 Just give me the time you want me to remind you to take your meds, formatted like hours:minutes:am (or pm)"
+	
+	--
+	
+	"\![open,inputbox,OnMedTwoSet,-1]"
+
+}
+
+//yay reusing code
+OnMedOneSet{
+	
+	_medarray = SPLIT(reference0, ':')
+	//"Printing wake array: %(wakearray[0]), %(wakearray[1]) \x"
+	--
+	//make sure 2 numbers were entered and that they both are ints + am or pm follows it
+	//this if statement is literally so ugly im sorry
+	if (ARRAYSIZE(_medarray) != 3) || !(ISINTSTR(_medarray[0]+'')) || !(ISINTSTR(_medarray[1]+'')) || !(TOLOWER(_medarray[2]) == "am" || TOLOWER(_medarray[2]) == "pm") {
+		
+		"\0\s[8]Hmm... are you sure you gave me a correctly formatted time?\![open,inputbox,OnMedOneSet,-1]\e"
+	
+	}
+	--
+	medonehour = TOINT(_medarray[0])
+	medonemin = TOINT(_medarray[1])
+	
+	if (TOLOWER(_medarray[2]) == "am") {
+		medoneampm = 0 //am
+	} else { //pm
+		medoneampm = 1
+	}
+	
+	//make sure times are real times
+	if (medonehour > 12 || medonehour < 1) || (medonemin > 59 || medonemin < 0) {
+	
+		"\s[3]I don't think that time exists... Try again.\![open,inputbox,OnMedOneSet,-1]\e"
+	}
+	--	
+	
+	//formatting
+	if medonemin < 10 {
+	
+		medonemin = "0" + medonemin
+	}
+	--
+	if (medoneampm) {
+	
+		"\0\s[0]\b2I'll remind you to take your medicine at %(medonehour):%(medonemin) PM!\n\n[half]"
+	} else {
+		"\0\s[0]\b2I'll remind you to take your medicine at %(medonehour):%(medonemin) AM!\n\n[half]"
+	}
+	
+	--
+
+	
+	--
+	if medtworeminder && changeboth{
+		
+		"\0\s[0]Now please give me the time for the second medicine reminder, formatted the same way as the first :P\![open,inputbox,OnMedTwoSet,-1]"
+	
+	} else {
+	
+		
+		"\_q\0\s[0]Back to...\n\n[half]"
+		--
+		"\![*]\q[Reminders menu,reminders]\n/
+		\![*]\q[Productivity menu,OnProduMenu]\n/
+		\![*]\q[Main menu,OnBACKTOMENU]\e"
+		
+	}
+
+}
+
+
+OnMedTwoSet{
+	
+	_medarray = SPLIT(reference0, ':')
+	--
+	//make sure 2 numbers were entered and that they both are ints + am or pm follows it
+	//this if statement is literally so ugly im sorry
+	if (ARRAYSIZE(_medarray) != 3) || !(ISINTSTR(_medarray[0]+'')) || !(ISINTSTR(_medarray[1]+'')) || !(TOLOWER(_medarray[2]) == "am" || TOLOWER(_medarray[2]) == "pm") {
+		
+		"\0\s[8]Hmm... are you sure you gave me a correctly formatted time?\![open,inputbox,OnMedTwoSet,-1]\e"
+	
+	}
+	--
+	medtwohour = TOINT(_medarray[0])
+	medtwomin = TOINT(_medarray[1])
+	
+	if (TOLOWER(_medarray[2]) == "am") {
+		medtwoampm = 0 //am
+	} else { //pm
+		medtwoampm = 1
+	}
+	
+	//make sure times are real times
+	if (medtwohour > 12 || medtwohour < 1) || (medtwomin > 59 || medtwomin < 0) {
+	
+		"\s[3]I don't think that time exists... Try again.\![open,inputbox,OnMedTwoSet,-1]\e"
+	}
+	
+	--
+	//formatting
+	if medtwomin < 10 {
+	
+		medtwomin = "0" + medtwomin
+	}
+	--	
+	if (medtwoampm) {
+	
+		"\0\s[0]\b2I'll remind you to take your medicine at %(medtwohour):%(medtwomin) PM!\n\n[half]"
+	} else {
+		"\0\s[0]\b2I'll remind you to take your medicine at %(medtwohour):%(medtwomin) AM!\n\n[half]"
+	}
+	
+	--
+			
+	"\_q\0\s[0]Back to...\n\n[half]"
+	--
+	"\![*]\q[Reminders menu,reminders]\n/
+	\![*]\q[Productivity menu,OnProduMenu]\n/
+	\![*]\q[Main menu,OnBACKTOMENU]\e"
+		
+
+}
+
+
+
+
+//***************************** Other Reminders  *************************************************
+
+//just doing one for now. uf!sans has a better reminder system to mirror whenever i rework this [screams
+//variables: 
+//otherreminderon = 0 if off, 1 if on
+//otherreminderrepeat = 0 if no repeat, 1 if repeat
+//otherremindernote = whatever the person wants to remember to do
+//otherreminderhour, otherremindermin, otherreminderampm - time variables
+Select.otherremind{
+	
+	//if other reminder set, option to change (time/frequency) or cancel
+	if (otherreminderon) {
+		
+		"\0\s[0]\b2Oh! You already have a reminder to %(otherremindernote) at %(otherreminderhour):%(otherremindermin)"	
+		--
+		if (otherreminderampm) {
+	
+			" PM! "
+		} else {
+			" AM! "
+		}
+		--
+		if (otherreminderrepeat) {
+			"I'm reminding you daily. "
+		} else {
+			"I'm only reminding you once. "
+		}
+		--
+		"\n\n[half]Did you want to...\n\n[half]"
+		--
+		"\![*]\q[Cancel it?,cancelotherreminder]\n/
+		\![*]\q[Change it?,changeotherreminder]\n\n[half]"
+		
+	} else { //other reminder not set 
+
+		"\0\s[0]\b2Want me to remind you to do something else?\w8 No problem!\w8 Do you want a repeating reminder or a one time only reminder?\n\n[half]"
+		--	
+	
+		"\![*]\q[Repeating,repeating]\n/
+		\![*]\q[One time,onetime]\n\n[half]"
+	}
+	
+	--
+	"\_qBack to...\n\n[half]"
+	--
+	"\![*]\q[Reminders menu,reminders]\n/
+	\![*]\q[Productivity menu,OnProduMenu]\n/
+	\![*]\q[Main menu,OnBACKTOMENU]\e"
+
+
+}
+
+Select.repeating{
+	
+	otherreminderrepeat = 1
+	--
+	
+	"\0\s[0]Okie!\w8 I'll remind you daily!\w8 Now, please give me what time you want to be reminded at, formatted like hours:minutes:am (or pm)"
+	
+	--
+	
+	"\![open,inputbox,OnOtherReminderSetTime,-1]"
+	
+}
+
+Select.onetime{
+
+	otherreminderrepeat = 0
+	--
+	
+	"\0\s[5]Sounds good ～\w8 I'll just remind you once.\w8 What time do you want to be reminded at?\w8 Format it like hours:minutes:am (or pm)"
+	
+	--
+	
+	"\![open,inputbox,OnOtherReminderSetTime,-1]"
+
+}
+
+Select.cancelotherreminder{
+	
+	otherreminderon = 0
+	otherreminderampm = -1
+	otherreminderhour = -1
+	otherremindermin = -1
+	otherremindernote = ""
+	otherreminderrepeat = -1
+	
+	--
+	"\0\s[5]\b2Okay ～\w8 I canceled the reminder!\n\n[half]"
+	--
+	"\_qBack to...\n\n[half]"
+	--
+	"\![*]\q[Reminders menu,reminders]\n/
+	\![*]\q[Productivity menu,OnProduMenu]\n/
+	\![*]\q[Main menu,OnBACKTOMENU]\e"
+
+
+}
+
+//could change this to options of what to remind ppl about... will have to see what feedback says :Y
+Select.changeotherreminder{
+	
+	"\0\s[8]Hmm...?\w8 Okay, do you want me to remind you daily or only once?\n\n[half]"
+	--
+	"\![*]\q[Repeating,repeating]\n/
+	\![*]\q[One time,onetime]\n\n[half]"
+}
+
+OnOtherReminderSetTime{
+	
+	_otherarray = SPLIT(reference0, ':')
+	--
+	//make sure 2 numbers were entered and that they both are ints + am or pm follows it
+	//this if statement is literally so ugly im sorry
+	if (ARRAYSIZE(_otherarray) != 3) || !(ISINTSTR(_otherarray[0]+'')) || !(ISINTSTR(_otherarray[1]+'')) || !(TOLOWER(_otherarray[2]) == "am" || TOLOWER(_otherarray[2]) == "pm") {
+		
+		"\0\s[8]Hmm... are you sure you gave me a correctly formatted time?\![open,inputbox,OnOtherReminderSetTime,-1]\e"
+	
+	}
+	--
+	otherreminderhour = TOINT(_otherarray[0])
+	otherremindermin = TOINT(_otherarray[1])
+	
+	if (TOLOWER(_otherarray[2]) == "am") {
+		otherreminderampm = 0 //am
+	} else { //pm
+		otherreminderampm = 1
+	}
+	
+	//make sure times are real times
+	if (otherreminderhour > 12 || otherreminderhour < 1) || (otherremindermin > 59 || otherremindermin < 0) {
+	
+		"\0\s[3]I don't think that time exists... Try again.\![open,inputbox,OnOtherReminderSetTime,-1]\e"
+	}
+	
+	--
+	//formatting
+	if otherremindermin < 10 {
+	
+		otherremindermin = "0" + otherremindermin
+	}
+	--
+	
+	"\0\s[5]Okie!\w8 What do you want me to remind you of?\![open,inputbox,OnOtherReminderSetNote,-1]\e"
+	
+}
+
+OnOtherReminderSetNote{
+	
+	otherremindernote = reference0
+	--
+	otherreminderon = 1
+	
+	--
+	
+	if (otherreminderampm) {
+	
+		"\0\s[0]\b2I'll remind you %(otherremindernote) at %(otherreminderhour):%(otherremindermin) PM!\n\n[half]"
+	} else {
+		"\0\s[0]\b2I'll remind you %(otherremindernote) at %(otherreminderhour):%(otherremindermin) AM!\n\n[half]"
+	}
+	
+		--
+	"\_q\0\s[0]Back to...\n\n[half]"
+	--
+	"\![*]\q[Reminders menu,reminders]\n/
+	\![*]\q[Productivity menu,OnProduMenu]\n/
+	\![*]\q[Main menu,OnBACKTOMENU]\e"
+
+
+}
+
+
+
+//*****************************  Bootleg Pomodoro  *************************************************
+
+//TODO: edit menu so only option when you have a pomo going is to cancel the pomo, not start a new one
+OnPomodoro
+{
+	"\0\s[0]\b2Pick a preset work time+break time combo, or define your own!\n\n[half]"
+	
+	--
+	
+	"\![*]\q[25/5,pomoreg]\n/
+	\![*]\q[50/10,pomodouble]\n/
+	\![*]\q[100/20,pomoquad]\n/
+	\![*]\q[Custom,pomocustom]\n/
+	\![*]\q[What is this?,pomoexplain]"
+	
+	--
+	
+	if pomoOn || pomoBreakOn{
+	
+		"\n\![*]\q[Cancel current timer,pomocancel]\n"
+	
+	}
+	
+	--
+	
+	"\n\n[half]\_q\0\s[0]Back to...\n\n[half]"
+	--
+	"\![*]\q[Productivity menu,OnProduMenu]\n/
+	\![*]\q[Main menu,OnBACKTOMENU]\e"
+}
+
+
+//Slightly altered pomodoro menu. I took out the help option because presumably if you've reached this menu, you've already done a pomo and know what they are
+Select.pomodoroMenu2 
+{
+	"\0\s[0]\b2Ready to start another work session?\w8\s[6] I'm proud of you!\n\n[half]"
+	
+	--
+	
+	"\![*]\q[25/5,pomoreg]\n/
+	\![*]\q[50/10,pomodouble]\n/
+	\![*]\q[100/20,pomoquad]\n/
+	\![*]\q[Custom,pomocustom]\n\n[half]"
+	
+	--
+	"Nevermind, back to...\n\n[half]"
+	--
+	"\![*]\q[Productivity menu,OnProduMenu]\n/
+	\![*]\q[Main menu,OnBACKTOMENU]\e"
+}
+
+Select.pomoreg{
+	
+	pomotype = "reg"
+	"\0\s[0]Would ya like to set a goal for this work session?\n\n[half]"
+	
+	--
+	
+	"\![*]\q[Yah,pomogoal]\n/
+	\![*]\q[Nah,nogoal]\n\n[half]\e"
+
+}
+
+//selecting a type of work session
+Select.pomodouble{
+	
+	pomotype = "double"
+	"\0\s[0]Would ya like to set a goal for this work session?\n\n[half]"
+	
+	--
+	
+	"\![*]\q[Yah,pomogoal]\n/
+	\![*]\q[Nah,nogoal]\n\n[half]\e"
+
+}
+
+Select.pomoquad{
+	
+	pomotype = "quad"
+	"\0\s[0]Would ya like to set a goal for this work session?\n\n[half]"
+	
+	--
+	
+	"\![*]\q[Yah,pomogoal]\n/
+	\![*]\q[Nah,nogoal]\n\n[half]\e"
+
+}
+
+//custom requires you to set minutes so there's an extra step. maybe allow the user to define their own preset later on??
+Select.pomocustom{
+	
+	pomotype = "custom"
+	"\0\s[0]Ooo, getting fancy.\w8 Please tell me how long you want to work, in minutes!\n\n[half]"
+	
+	--
+	
+	"\![open,inputbox,OnSetmin,-1]"
+	
+
+}
+
+//sets work timer for a custom time. no words or negative/0 numbers
+OnSetmin{
+	
+	pomocustomtimer = reference0
+	
+	//why am i doing this. testcases r in my blood i guess. anyways checks if user entered a valid number
+	if !(ISINTSTR(pomocustomtimer+'')) {
+		
+		"\0\s[3]Umm... could you just give me a number, please? \![open,inputbox,OnSetmin,-1]\e"
+		
+	} elseif pomocustomtimer < 1 {
+		
+		"\0\s[0]I can't set a timer for %(reference0) minutes!! Please just give me a positive number. \![open,inputbox,OnSetmin,-1]\e"
+		
+	} else { //valid number
+		 "\0\s[0]Got it!\w8 Would ya like to set a goal for this work session?\n\n[half]"
+	}
+	
+	--
+	
+	"\![*]\q[Yah,pomogoal]\n/
+	\![*]\q[Nah,nogoal]\n\n[half]\e"
+	
+
+}
+
+//next few functions are for goal setting/when the user doesnt pick a goal
+Select.pomogoal{
+	
+	"\0\s[0]Cool!\w8 Let me know what you want to focus on. ^_^\n\n[half]"
+	
+	--
+	
+	"\![open,inputbox,OnPomoGoal,-1]"
+
+}
+
+
+OnPomoGoal{
+
+	pomogoal = reference0
+	
+	--
+	
+	PomoStart
+
+}
+
+Select.nogoal{
+	
+	pomogoal = ""
+	
+	--
+	
+	PomoStart
+
+}
+	
+//the main meat of the pomo functionality. includes checking for when the work session runs into the next hour	
+PomoStart{	
+	pomohour = hour12
+	pomomin = minute
+	pomosec = second
+	
+	case pomotype
+      {
+            when "reg" //25 min
+            {
+                pomomin = pomomin + 25
+            }
+            when "double" //50 min
+            {
+                pomomin = pomomin + 50
+            }
+            when "quad" //100 min
+            {
+                pomohour++
+				pomomin = pomomin + 40
+            }            
+			others //custom
+            {
+                //yaaaay modulo. this method of counting how many hours 4 the work session wont work if someone does over 24 hours but would anyone really do that..... 
+				_hours = pomocustomtimer/60
+				_minutes = pomocustomtimer%60
+				pomohour = pomohour + _hours
+				pomomin = pomomin + _minutes
+            }
+      }
+	
+	//checking for hour rollover
+	if pomomin > 59 {
+		pomomin = pomomin - 60
+		pomohour += 1
+
+	}
+	
+	//hour12 goes 0-11 because it sucks
+	//fix to display 12 at noon/midnight 
+	
+	if pomohour == 0 { 
+		pomohour = 12
+	}
+
+	//to correct going over the 12 hour mark. gosh i wish i had just gone with military time
+	if pomohour > 12 {
+		pomohour = pomohour - 12
+	}
+	
+	pomoOn = 1
+	
+	//formatting stuffs
+	if pomomin < 10 {
+	
+		pomomin = "0" + pomomin
+	}
+	
+	
+	
+	
+	
+	--
+	if pomogoal == "" {
+		
+		"\0\s[0]Alrighty!\w8 Your work timer ends at %(pomohour):%(pomomin).\w8 Good luck!"
+		
+	} else {
+		
+		"\0\s[0]Okie, your goal for this session is %(pomogoal). The timer is running until %(pomohour):%(pomomin).\w8 I believe in you!"
+	}
+	
+}
+
+//on pomo over, presets r already calculated for break time but the custom one needs input from user
+OnPomoOver{
+	
+	if pomotype == "custom"{
+		
+		"\0\s[0]You worked hard!\w8 Would you like a break?\n\n[half]"
+		"\0\s[0]Nice job!\w8 Would you like a break?\n\n[half]"
+		
+		--
+	
+		"\![*]\q[Yah,OnPomoBreakCustom]\n/
+		\![*]\q[Nah,OnPomoEnd]\n\n[half]\e"
+		
+		
+	} else {
+	
+		"\0\s[0]You worked hard!\w8 Would you like a break?\n\n[half]"
+		"\0\s[0]Nice job!\w8 Would you like a break?\n\n[half]"
+	
+		--
+	
+		"\![*]\q[Yah,OnPomoBreakCalc]\n/
+		\![*]\q[Nah,OnPomoEnd]\n\n[half]\e"
+	}
+
+}
+
+
+//same stuff as custom pomo time setting
+OnPomoBreakCustom{
+	
+	"\0\s[0]You deserve a break for your hard work!\w8 How long do you want it to be, in minutes?\n\n[half]"
+	
+	--
+	
+	"\![open,inputbox,OnSetbreakmin,-1]"
+	
+
+}
+
+OnSetbreakmin{
+
+	pomocustomtimer = reference0
+	
+	if !(ISINTSTR(pomocustomtimer+'')) {
+		
+		"\0\s[3]Umm... could you just give me a number, please? \![open,inputbox,OnSetbreakmin,-1]\e"
+		
+	} elseif pomocustomtimer < 1 {
+		
+		"\0\s[3]I can't set a timer for %(reference0) minutes!! Please just give me a positive number. \![open,inputbox,OnSetbreakmin,-1]\e"
+		
+	}
+	
+	--
+	
+	OnPomoBreakCalc
+
+}
+
+//end work session, whether user had a break or not
+OnPomoEnd{
+	
+	"\0\s[0]Done with that session! Do you want to start another one?\n\n[half]"
+	
+	--
+	
+	"\![*]\q[Yah,pomodoroMenu2]\n\n[half]"
+	
+	--
+	"\0\s[0]Nah, back to...\n\n[half]"
+	--
+	"\![*]\q[Productivity menu,OnProduMenu]\n/
+	\![*]\q[Main menu,OnBACKTOMENU]\e"
+
+}
+
+//same calculating as PomoStart
+OnPomoBreakCalc{	
+	pomohour = hour12
+	pomomin = minute
+	pomosec = second
+	
+	case pomotype
+      {
+            when "reg"//5 min
+            {
+                pomomin = pomomin + 5
+            }
+            when "double" //10 min
+            {
+                pomomin = pomomin + 10
+            }
+            when "quad" //20 min
+            {
+				pomomin = pomomin + 20
+            }            
+			others //custom
+            {
+                _hours = pomocustomtimer/60
+				_minutes = pomocustomtimer%60
+				pomohour = pomohour + _hours
+				pomomin = pomomin + _minutes
+				
+				
+            }
+      }
+	
+	if pomomin > 59 {
+		pomomin = pomomin - 60
+		pomohour += 1
+	}
+	
+	
+	//to correct going over the 12 hour mark. gosh i wish i had just gone with military time
+	if pomohour > 12 {
+		pomohour = pomohour - 12
+	}
+	
+	if pomohour == 0 { 
+		pomohour = 12
+	}
+	pomobreakon = 1
+	
+	if pomomin < 10 {
+	
+		pomomin = "0" + pomomin
+	}
+	
+	
+	--
+	
+	"\0\s[0]Your break ends at %(pomohour):%(pomomin).\w8 Take some time to rest ^o^\w8\e"
+	
+}
+
+//pomodoro explanation
+Select.pomoexplain{
+
+
+	"\0\s[0]Here, you can set a timer for working on something. After your work session ends, you can take a short break!\w8 This is based on the \_a[https://en.wikipedia.org/wiki/Pomodoro_Technique]Pomodoro Technique\_a\x\cYou can set a custom timer if any of the presets don't appeal to you.\w8 I recommend giving yourself one minute of break time for every five minutes worked, but really, it's up to you.\n\n[half]"
+	--
+	"\![*]\q[Got it!,OnPomodoro]\n\e"
+	
+}
+
+//for canceling the pomo timer. cancels both the break timer and the work timer 
+Select.pomocancel{
+
+	
+	//just cancel out everything for funsies. I probably dont need to but w/e
+	pomogoal = ""
+	pomohour = -1
+	pomomin = -1
+	pomosec = -1
+	pomotype = ""
+	pomocustomtimer = 0
+	
+	--
+	if pomoOn {
+		"\0\s[0]Canceling your work session?\w8 That's fine!"
+	} 
+	else {//pomoBreakOn
+		"\0\s[0]Canceling your break?\w8 Gotcha."
+	}
+	--
+	pomoOn = 0
+	pomoBreakOn = 0
+	--
+	"\n\n[half]\_q\0\s[0]Back to...\n\n[half]"
+	--
+	"\![*]\q[Work Timer menu,OnPomodoro]\n/
+	\![*]\q[Productivity menu,OnProduMenu]\n/
+	\![*]\q[Main menu,OnBACKTOMENU]\e"
+
+}
+
+
+//*****************************  Calculator  *************************************************
+
+Select.calctime{
+	
+	"\0\s[0]Calculator coming Soon\f[sup,1]TM\f[sup,0]\n\n[half]"
+	--
+	"\_q\0\s[0]Back to...\n\n[half]"
+	--
+	"\![*]\q[Productivity menu,OnProduMenu]\n/
+	\![*]\q[Main menu,OnBACKTOMENU]\e"
+
+}

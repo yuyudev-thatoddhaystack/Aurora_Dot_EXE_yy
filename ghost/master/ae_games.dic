@@ -1,0 +1,627 @@
+//*************************  Games Menu Stuff  **********************************************
+OnGamesMenu{
+	"\0\s[0]\b2Wanna play a game?\n\n[half]"
+	"\0\s[0]\b2Oh! Let's play a game!\n\n[half]"
+	"\0\s[1]\b2Watch out! I'm pretty good at these :P\n\n[half]"
+	--
+		
+	"\![*]\q[Rock Paper Scissors,rpsgame]\n/
+	\![*]\q[Tic-Tac-Toe,tttgame]\n/
+	\![*]\q[Higher or Lower,holgame]\n/
+	\![*]\q[Poker,pokergame]\n\n[half]"
+	--
+	"\![*]\q[Back to the main menu,OnBACKTOMENU]\e"
+
+}
+
+//*************************  Rock Paper Scissors  **********************************************
+//code by zarla from hunter and smoker ghost, edited slightly
+//surface notes - 14 is confident/default, 15 is upset, 16 is bored
+//intervals - no interval is rock, 5 is scissors, 6 is paper
+Select.rpsgame{
+	
+	"\0\s[0]\b2Think you can beat me at rock paper scissors?"
+	"\0\s[1]\b2Heh, my rock paper scissors strategy is flawless!"
+	--
+	"\n\n[half]/
+	\![*]\q[Throw Rock,Hthrowrock]\n/
+ 	\![*]\q[Throw Paper,Hthrowpaper]\n/
+	\![*]\q[Throw Scissors,Hthrowscissors]\n\n[half]"
+	--
+	"\_q\0Back to...\n\n[half]"
+	--
+	"\![*]\q[Games menu,OnGamesMenu]\n/
+	\![*]\q[Main menu,OnBACKTOMENU]\e"
+
+}
+
+OnHunterRSPtie
+{
+	"\0\n\n[half]"
+	--
+	"\![*]\q[Throw Rock,Hthrowrock]\n/
+ 	\![*]\q[Throw Paper,Hthrowpaper]\n/
+	\![*]\q[Throw Scissors,Hthrowscissors]\e"
+}
+
+Select.Hthrowrock
+{
+OnHThrowRock
+}
+
+Select.Hthrowpaper
+{
+	OnHThrowPaper
+}
+
+Select.Hthrowscissors
+{
+	OnHThrowScissors
+}
+
+OnHThrowRock
+{
+	if RAND(100) < 33
+	{
+		
+		"\0\b2\s[14]\i6Ha!\w4 Paper covers rock, so I win!%(RPSReturn)"
+		"\0\b2\s[14]\i6And I throw... paper!\w8 I beat you this time!%(RPSReturn)"
+		"\0\b2\s[14]\i6I choose paper!\w8 Which beats your rock!%(RPSReturn)"
+		"\0\b2\s[14]\i6I fold my paper into an airplane that...\w4 carries your rock away.\w8 It sounded better in my head.%(RPSReturn)"
+		"\0\b2\s[14]\i6Paper beats rock!\w8 I'm not sure why, but the point is I win!%(RPSReturn)"
+		
+	}
+	elseif RAND(100) > 65
+	{
+		AP+=2
+		"\0\b2\s[14]\i5Scissors! \w8\s[15]\i5...But that loses to rock.\w8\n\n[half]You got 2 AP%(RPSReturn)"
+		"\0\b2\s[15]\i5Scissors... \w8You win this round.\w8\n\n[half]You got 2 AP%(RPSReturn)"
+		"\0\b2\s[15]\i5Oh noooooo, you crushed my scissors!\w8\n\n[half]You got 2 AP%(RPSReturn)"
+		"\0\b2\s[15]\i5Well, rock beats scissors, so I guess you win this time.\w8\n\n[half]You got 2 AP%(RPSReturn)"
+		
+	}
+	else
+	{
+		"\0\b2\s[16]Ah, so you picked rock too... \w8\s[14]C'mon, \w4try again!\w8"
+		"\0\b2\s[16]Oh so it's a tie... \w8\s[14]Try again!\w8"
+		
+		--
+		OnHunterRSPtie
+		
+	}
+}
+
+OnHThrowPaper
+{
+	if RAND(100) < 33
+	{
+		
+		"\0\b2\s[14]\i5My scissors cut apart your paper!\w8 LOL, I win!%(RPSReturn)"
+		"\0\b2\s[14]\i5Scissors! \w8...Unless your paper is made out of titanium, I win!%(RPSReturn)"
+		"\0\b2\s[14]\i5Ha!\w4 I knew you would choose paper, so I picked scissors!%(RPSReturn)"
+		"\0\b2\s[14]\i5Oh, so you picked paper?\w8 Too bad I have scissors this time.%(RPSReturn)"
+		
+	}
+	elseif RAND(100) > 65
+	{
+		AP+=2
+		"\0\b2\s[14]I throw rock!\w4 ...\s[15]\w4That was the wrong move.\w8\n\n[half]You got 2 AP%(RPSReturn)"
+		"\0\b2\s[14]Fear my rock power!\w4 \s[15]...Oh, nevermind, you countered me with paper.\w8\n\n[half]You got 2 AP%(RPSReturn)"
+		"\0\b2\s[15]Oh no!\w8 Your paper beat my rock!\w8 ...Somehow.\w8\n\n[half]You got 2 AP%(RPSReturn)"
+		"\0\b2\s[15]Dang, I guess I lose, because I picked rock.\w8\n\n[half]You got 2 AP%(RPSReturn)"
+		
+	}
+	else
+	{
+		"\0\b2\s[16]\i6Ah, so you picked paper too... \w8\s[14]\i6C'mon, \w4try again!\w8"
+		"\0\b2\s[16]\i6Oh so it's a tie... \w8\s[14]\i6Try again!\w8"
+		--
+		OnHunterRSPtie
+	}
+}
+
+OnHThrowScissors
+{
+	if RAND(100) < 33
+	{
+	
+		"\0\b2\s[14]My rock destroys your scissors!\w8 ...Or at least blunts them.%(RPSReturn)"
+		"\0\b2\s[14]Rock vs scissors!\w8 I win this round!%(RPSReturn)"
+		"\0\b2\s[14]Your scissors are no match for my rock!\w8 I win!%(RPSReturn)"
+		"\0\b2\s[14]I threw rock, beating your scissors!\w8 Better luck next time.%(RPSReturn)"
+
+	}
+	elseif RAND(100) > 65
+	{
+		AP+=2
+		"\0\b2\s[14]\i6I choose... paper!\w4\s[15]\i6 ...Which was the wrong choice.\w8\n\n[half]You got 2 AP%(RPSReturn)"
+		"\0\b2\s[14]\i6Paper!\w4 \s[15]\i6...Which is cut to pieces by your scissors.\w8 How tragic.\w8\n\n[half]You got 2 AP%(RPSReturn)"
+		"\0\b2\s[15]\i6Guess I was the fool who brought paper to a scissors fight.\w8\n\n[half]You got 2 AP%(RPSReturn)"
+		"\0\b2\s[15]\i6You threw scissors?\w8 I can't believe it!\w8 I guess I lose this round\w8\n\n[half]You got 2 AP%(RPSReturn)"
+	}
+	else
+	{
+		"\0\b2\s[16]\i5Ah, so you picked scissors too... \w8\s[14]\i5C'mon, \w4try again!\w8"
+		"\0\b2\s[16]\i5Oh so it's a tie... \w8\s[14]\i5Try again!\w8"
+		--
+		OnHunterRSPtie
+	}
+}
+
+RPSReturn
+{
+	"\n\n[half]\![*]\q[Another round?,rpsgame]\n\n[half]"
+	--
+	"\_q\0Nah, back to...\n\n[half]"
+	--
+	"\![*]\q[Games menu,OnGamesMenu]\n/
+	\![*]\q[Main menu,OnBACKTOMENU]\e"
+}
+
+
+//----------------------------------Tic Tac Toe------------------
+Select.tttgame{
+	
+	OnPlayOX
+
+}
+
+
+//OX游戏，by Pygmalion, loosely translated by Zar
+//edited some by vita to have the AI make mistakes
+//-------------------------------------------
+
+OnPlayOX
+{
+	//intializing a tictactoe array with all 0's
+	arrOX = IARRAY
+	for _i = 0; _i < 9; _i++ {
+		arrOX = (arrOX, 0)
+	}
+	"\0\s[0]Tic-tac-toe?\w4 Okie!\w9\w9\c"
+	"\0\s[0]Xs and Os, huh?\w4 Let's start!\w9\w9\c"
+	"\0\s[5]Tic-tac-toe, huh.\w4 Think you can beat me?\w9\w9\c"
+	"\0\s[1]Tic-tac-toe, start!\w9\w9\c"
+	--
+	PlayOXshow(0)
+}
+
+PlayOXshow
+{
+
+	//this function prints out the tictactoe array 
+	_tempstr = ""
+	
+	
+	for _i = 0; _i < 3; _i++ {
+		
+		for _j = 0; _j < 3; _j++ {
+			
+			_temp = _i * 3 + _j
+			
+			
+			if arrOX[_temp] == -1
+				_tempstr = _tempstr + "X"
+			elseif arrOX[_temp] == 1
+				_tempstr = _tempstr + "O"
+			elseif _argv[0] == 0
+				_tempstr = _tempstr + "\q[　,PlayOXrun("+_temp+")]"
+			else
+				_tempstr = _tempstr + "　"
+			if _j != 2
+				_tempstr = _tempstr + " | "
+		}
+		_tempstr = _tempstr + "\n[90]"
+		if _i != 2
+		{
+			_tempstr = _tempstr + "------------"
+		}
+		_tempstr = _tempstr + "\n[90]"
+	}
+	//switching btwn what dialogue to give. -> is the game over or not?
+	switch _argv[0]
+	{
+		"\_q\0\s[0]\b[2]%(username)'s turn!\n\n%(_tempstr)\n[half]Back to...\n\n[half]\![*]\q[Games menu,OnGamesMenu]\n\![*]\q[Main menu,OnBACKTOMENU]\e"
+		
+		{
+			if _argv[0] == 1; AP+=2
+			
+			"\_q\0\s[0]\b[2]\n%(_tempstr)\n[half]\_q\s[3]I lost...\w8 \s[5]Lemme try again!\w9\w9\n[150]You got 2 AP\n\n[half]\_q\![*]\q[Play Again,OnPlayOX]\n\n[half]Back to...\n\n[half]\![*]\q[Games menu,OnGamesMenu]\n\![*]\q[Main menu,OnBACKTOMENU]\e"
+			
+			"\_q\0\s[0]\b[2]\n%(_tempstr)\n[half]\_qOh, you beat me, %(username)?\w4\s[5] Good job!\w8\n[150]You got 2 AP\n\n[half]\_q\![*]\q[Play Again,OnPlayOX]\n\n[half]Back to...\n\n[half]\![*]\q[Games menu,OnGamesMenu]\n\![*]\q[Main menu,OnBACKTOMENU]\e"
+			
+			"\_q\0\s[0]\b[2]\n%(_tempstr)\n[half]\_qAh, so you won...\w4\s[7] I'm not gonna give up!!\n[150]You got 2 AP\n\n[half]\_q\![*]\q[Play Again,OnPlayOX]\n\n[half]Back to...\n\n[half]\![*]\q[Games menu,OnGamesMenu]\n\![*]\q[Main menu,OnBACKTOMENU]\e"
+		}
+		
+		{
+
+			"\_q\0\s[9]\b[2]\n%(_tempstr)\n[half]\_q\Guess it's a tie, huh.\n[150]\_q\![*]\q[Play Again,OnPlayOX]\n\n[half]Back to...\n\n[half]\![*]\q[Games menu,OnGamesMenu]\n\![*]\q[Main menu,OnBACKTOMENU]\e"
+			
+			"\_q\0\s[9]\b[2]\n%(_tempstr)\n[half]\_qWelp, it's a tie.\n[150]\_q\![*]\q[Play Again,OnPlayOX]\n\n[half]Back to...\n\n[half]\![*]\q[Games menu,OnGamesMenu]\n\![*]\q[Main menu,OnBACKTOMENU]\e"
+			
+			"\_q\0\s[3]\b[2]\n%(_tempstr)\n[half]\_qWe tied...\w4 Wanna try again?\n[150]\_q\![*]\q[Play Again,OnPlayOX]\n\n[half]Back to...\n\n[half]\![*]\q[Games menu,OnGamesMenu]\n\![*]\q[Main menu,OnBACKTOMENU]\e"
+			
+			
+		}
+		
+		{
+			
+			"\_q\0\s[6]\b[2]\n%(_tempstr)\n[half]\_q\nI won!\w4 Woohoo!\n[150]\_q\![*]\q[Play Again,OnPlayOX]\n\n[half]Back to...\n\n[half]\![*]\q[Games menu,OnGamesMenu]\n\![*]\q[Main menu,OnBACKTOMENU]\e"
+			
+			"\_q\0\s[1]\b[2]\n%(_tempstr)\n[half]\_q\nI win, %(username).\w4 Better luck next time.\n[150]\_q\![*]\q[Play Again,OnPlayOX]\n\n[half]Back to...\n\n[half]\![*]\q[Games menu,OnGamesMenu]\n\![*]\q[Main menu,OnBACKTOMENU]\e"
+			
+			"\_q\0\s[5]\b[2]\n%(_tempstr)\n[half]\_q\nAlright!\w I'm a tic-tac-toe champion!\n[150]\_q\![*]\q[Play Again,OnPlayOX]\n\n[half]Back to...\n\n[half]\![*]\q[Games menu,OnGamesMenu]\n\![*]\q[Main menu,OnBACKTOMENU]\e"
+		}
+	}
+}
+
+Select.PlayOXrun
+{
+	arrOX[_argv[0]] = -1
+	
+
+	if PlayOXover(_argv[0]) != 1
+	{
+		_tempid = -1
+		_rightmax = -24
+		_tempright = 0
+		//loop through ox array
+		for _i = 0; _i < 9; _i++ {
+			//if it's a blank spot
+			if arrOX[_i] == 0
+			{
+				//check if this would make a win for the AI
+				arrOX[_i] = 1
+				if PlayOXover(_i) == 1
+				{
+					arrOX[_i] = 0
+					_tempid = _i
+					break
+				}
+				
+				
+				_rightmin = 24
+				for _j = 0; _j < 9; _j++ {
+					if arrOX[_j] == 0
+					{
+						//anticipate the player's next move 
+						arrOX[_j] = -1
+						_tempright = 0
+						_temparry = IARRAY
+						_temparry = (_temparry,arrOX[0] + arrOX[1] + arrOX[2]) //row 1
+						_temparry = (_temparry,arrOX[3] + arrOX[4] + arrOX[5]) //row 2
+						_temparry = (_temparry,arrOX[6] + arrOX[7] + arrOX[8]) //row 3
+						_temparry = (_temparry,arrOX[0] + arrOX[3] + arrOX[6]) //col 1
+						_temparry = (_temparry,arrOX[1] + arrOX[4] + arrOX[7]) //col 2
+						_temparry = (_temparry,arrOX[2] + arrOX[5] + arrOX[8]) //col 3
+						_temparry = (_temparry,arrOX[0] + arrOX[4] + arrOX[8]) //diag 1
+						_temparry = (_temparry,arrOX[2] + arrOX[4] + arrOX[6]) //diag 2
+						_oxnum = 0
+						foreach _temparry; _k {
+							_tempright += _k
+							if _k == -3
+								_oxnum = 24
+							if _k == -2
+								_oxnum++
+							if _k == 2
+								_oxnum--
+						}
+						if _oxnum > 1
+							_tempright = -24
+						if _tempright < _rightmin
+						{
+							_rightmin = _tempright
+						}
+						arrOX[_j] = 0
+					}
+				}
+				
+				
+				if _rightmin > _rightmax
+				{
+					_rightmax = _rightmin
+					_tempid = _i
+				}
+				//change back
+				arrOX[_i] = 0
+			}
+		}
+		
+		//determine if there are spaces left
+		if (_tempid == -1) {
+			//if so, semi-randomly pick a spot
+			_tempid = OXMistakes()
+		}
+		
+		
+		//if tempid unchanged, its a tie
+		if _tempid == -1 {
+			PlayOXshow(2)
+		}
+		else
+		{
+			
+			//make a move -> winning move for AI if found early on
+			
+			//need to tweak the chance 
+			if RAND(100) < 15 {
+				//function to determine random mistakes
+				_tempid = OXMistakes()
+				arrOX[_tempid] = 1
+			} else {
+				arrOX[_tempid] = 1
+			}
+			
+			//if the move the AI made results in a win for the AI, show the win sentence for the AI, else continue
+			if PlayOXover(_tempid) == 1
+			{
+				PlayOXshow(3)
+			}
+			else
+			{
+				PlayOXshow(0)
+			}
+		}
+	}
+	else //if the move the player made results in a win display player win dialogue
+		PlayOXshow(1)
+}
+
+PlayOXover
+{
+	//function to determine if the tictactoe game is over (and one of the players have won)
+	//argv is the square to check
+	_nowrow = _argv[0] / 3
+	_nowcolumn = _argv[0] % 3
+	
+	//first two check row and column for a completed line of x's or o's
+	//last two check diagonals
+	if arrOX[_nowrow*3] == arrOX[_nowrow*3+1] && arrOX[_nowrow*3+1] == arrOX[_nowrow*3+2] && arrOX[_nowrow*3] != 0 /
+	|| arrOX[_nowcolumn] == arrOX[3+_nowcolumn] && arrOX[3+_nowcolumn] == arrOX[6+_nowcolumn] && arrOX[_nowcolumn] != 0 /
+	|| arrOX[0] == arrOX[4] && arrOX[4] == arrOX[8] && arrOX[8] != 0 /
+	|| arrOX[2] == arrOX[4] && arrOX[4] == arrOX[6] && arrOX[6] != 0
+	{
+		1
+	}
+	else
+		0
+}
+
+//first pass at adding in mistakes
+OXMistakes {
+	//randomly pick a spot, else pick the first open spot if the random spot picked is already filled
+ 	_OXspot = RAND(9)
+	if arrOX[_OXspot] == 0 {
+		_OXspot
+	} else { 
+		for _i = 0; _i < 9; _i++ {
+			if arrOX[_i] == 0 {
+				_i
+				//break;
+			}
+		}
+		-1
+	}
+	
+}
+
+//----------------------------------Higher or Lower------------------
+
+Select.holgame{
+
+	//initialize deck of cards
+	//single card: disp value, actual value for hol, suit icon, color
+	deck = ("A,50,♠,gray","2,2,♠,gray","3,3,♠,gray","4,4,♠,gray","5,5,♠,gray","6,6,♠,gray","7,7,♠,gray","8,8,♠,gray","9,9,♠,gray","10,10,♠,gray","J,11,♠,gray","Q,12,♠,gray","K,13,♠,gray",/
+			"A,50,♥,red","2,2,♥,red","3,3,♥,red","4,4,♥,red","5,5,♥,red","6,6,♥,red","7,7,♥,red","8,8,♥,red","9,9,♥,red","10,10,♥,red","J,11,♥,red","Q,12,♥,red","K,13,♥,red",/
+			"A,50,♣,gray","2,2,♣,gray","3,3,♣,gray","4,4,♣,gray","5,5,♣,gray","6,6,♣,gray","7,7,♣,gray","8,8,♣,gray","9,9,♣,gray","10,10,♣,gray","J,11,♣,gray","Q,12,♣,gray","K,13,♣,gray",/
+			"A,50,♦,red","2,2,♦,red","3,3,♦,red","4,4,♦,red","5,5,♦,red","6,6,♦,red","7,7,♦,red","8,8,♦,red","9,9,♦,red","10,10,♦,red","J,11,♦,red","Q,12,♦,red","K,13,♦,red",);
+			
+	card = ""
+	HOLPoints = 0
+	HOLGuesses = 0 //correct guesses
+	OnPlayHOL
+
+}
+
+OnPlayHOL {
+
+	if reference0 == "rules" {
+		"\s[0]\0The rules for this game are simple.\w8 I'll show you a card, and you guess if the next card in the deck is higher or lower. Aces are the highest, and 2's are the lowest. Got it?\w8\x"
+	} else {
+		//pick a random card, keep old card for comparison
+		oldcard = card 
+		_rand = RAND(ARRAYSIZE(deck)-1)
+		card = deck[_rand]
+		//remove card from deck
+		deck[_rand] = IARRAY
+	}
+	--
+	if ARRAYSIZE(deck) == 0 {//this prob wont happen lol
+		HOLComplete
+	}
+
+	if reference0 == "higher"{
+	
+		//new card lower than old card
+		if TOINT(oldcard[1]) > TOINT(card[1])  {
+		
+			"\s[3]Oh no...\n\w4%(newcarddisp) is lower than %(oldcarddisp).\w8 Sadly, that means you lose u_u\w8\n\n"
+			
+			--
+			"\_q\![*]\q[Play again?,holgame] or...\n\n[half]"
+			--
+			"\0\s[0]Back to...\n\n[half]"
+			--
+			"\![*]\q[Games menu,OnGamesMenu]\n/
+			\![*]\q[Main menu,OnBACKTOMENU]\e"
+			
+			
+		
+		} elseif TOINT(oldcard[1]) < TOINT(card[1]) { //new card higher than old card
+		
+			//increase winnings
+			HOLPoints +=2 
+			HOLGuesses++
+		
+			"\s[5]Yep!\w8 %(newcarddisp) is higher than %(oldcarddisp) !\w8 Next card!\x"
+			
+			--
+			
+			"\s[0]Top Card: %(newcarddisp)\n\n"
+			
+			--
+			
+			"\_qDo you think the next card is:\n/
+			\![*]\q[Higher?,OnPlayHOL,higher]\n/
+			\![*]\q[Lower?,OnPlayHOL,lower]\n\n[half]"
+			
+			--
+			
+			"\![*]\q[View rules,OnPlayHOL,rules]\n/
+			\![*]\q[Stop and collect %(HOLPoints) AP,HOLOver]\e"
+	
+		} else { //same value 
+		
+			"\s[8]Huh.\w8%(newcarddisp) has the same value as %(oldcarddisp).\w8 Let's try that again...\x"
+			
+			--
+			
+			"\s[0]Top Card: %(newcarddisp)\n\n"
+			
+			--
+			
+			"\_qDo you think the next card is:\n/
+			\![*]\q[Higher?,OnPlayHOL,higher]\n/
+			\![*]\q[Lower?,OnPlayHOL,lower]\n\n[half]"
+			
+			--
+			
+			"\![*]\q[View rules,OnPlayHOL,rules]\n/
+			\![*]\q[Stop and collect %(HOLPoints) AP,HOLOver]\e"
+		
+		}
+	
+	} elseif reference0 == "lower" {
+	
+			//new card higher than old card
+		if TOINT(oldcard[1]) < TOINT(card[1])  {
+		
+			"\s[3]Oh no...\n\w4%(newcarddisp) is higher than %(oldcarddisp).\w8 Sadly, that means you lose u_u\w8\n\n"
+			
+			--
+			"\_q\![*]\q[Play again?,holgame] or...\n\n[half]"
+			--
+			"\0\s[0]Back to...\n\n[half]"
+			--
+			"\![*]\q[Games menu,OnGamesMenu]\n/
+			\![*]\q[Main menu,OnBACKTOMENU]\e"
+			
+			
+		
+		} elseif TOINT(oldcard[1]) > TOINT(card[1]) { //new card lower than old card
+		
+			//increase winnings
+			HOLPoints +=2 
+			HOLGuesses++
+		
+			"\s[5]Yep!\w8 %(newcarddisp) is lower than %(oldcarddisp) !\w8 Next card!\x"
+			
+			--
+			
+			"\s[0]Top Card: %(newcarddisp)\n\n"
+			
+			--
+			
+			"\_qDo you think the next card is:\n/
+			\![*]\q[Higher?,OnPlayHOL,higher]\n/
+			\![*]\q[Lower?,OnPlayHOL,lower]\n\n[half]"
+			
+			--
+			
+			"\![*]\q[View rules,OnPlayHOL,rules]\n/
+			\![*]\q[Stop and collect %(HOLPoints) AP,HOLOver]\e"
+	
+		} else { //same value 
+		
+			"\s[8]Huh.\w8%(newcarddisp) has the same value as %(oldcarddisp).\w8 Let's try that again...\x"
+			
+			--
+			
+			"\s[0]Top Card: %(newcarddisp)\n\n"
+			
+			--
+			
+			"\_qDo you think the next card is:\n/
+			\![*]\q[Higher?,OnPlayHOL,higher]\n/
+			\![*]\q[Lower?,OnPlayHOL,lower]\n\n[half]"
+			
+			--
+			
+			"\![*]\q[View rules,OnPlayHOL,rules]\n/
+			\![*]\q[Stop and collect %(HOLPoints) AP,HOLOver]\e"
+		
+		}
+	
+	
+	} else {
+		
+		"\s[0]\0Top Card: %(newcarddisp)\n\n"
+		
+		--
+		
+		"\_qDo you think the next card is:\n/
+		\![*]\q[Higher?,OnPlayHOL,higher]\n/
+		\![*]\q[Lower?,OnPlayHOL,lower]\n\n[half]/
+		\![*]\q[View rules,OnPlayHOL,rules]\e"
+		
+	}
+
+
+}
+
+Select.HOLOver {
+
+	AP += HOLPoints
+	
+	"\0You got %(HOLPoints) AP and had a streak of %(HOLGuesses) ^_^\w8 Want to try again?\n\n"
+	
+	--
+
+	"\![*]\q[Yah,holgame]\n\n[half]"
+
+	--
+	"Nah, back to...\n\n[half]"
+	--
+	"\![*]\q[Games menu,OnGamesMenu]\n/
+	\![*]\q[Main menu,OnBACKTOMENU]\e"
+
+}
+
+HOLComplete {
+
+	"\0\s[2]Whoa!!\w8 You really got through the whole deck?\w8 That's incredibly lucky...\w8 Maybe you should go buy a lotto ticket now, LOL.\w8\n\n"
+	--
+	"\_q\![*]\q[Play again?,holgame] or...\n\n[half]"
+	
+	--
+	"\0\s[0]Back to...\n\n[half]"
+	--
+	"\![*]\q[Games menu,OnGamesMenu]\n/
+	\![*]\q[Main menu,OnBACKTOMENU]\e"
+
+}
+
+
+
+//----------------------------------Poker------------------
+
+Select.pokergame{
+	
+	"\0\s[0]Poker coming Soon\f[sup,1]TM\f[sup,0]\n\n[half]"
+	--
+	"\_q\0\s[0]Back to...\n\n[half]"
+	--
+	"\![*]\q[Games menu,OnGamesMenu]\n/
+	\![*]\q[Main menu,OnBACKTOMENU]\e"
+
+}

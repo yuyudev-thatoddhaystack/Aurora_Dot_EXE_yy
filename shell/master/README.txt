@@ -1,0 +1,1 @@
+Aurora's default shell that comes with her download. Nothing much to say about it.

@@ -1,0 +1,839 @@
+﻿//---------------------------AI Talk--------------------------
+//Alright, this is it! The bread and butter of your ghost. This is where all their random conversations are stored. Of all the .dic files, this is the one you will probably be adding stuff to and updating the most as new dialogue comes to your mind. It is relatively simple in that there aren't many functions or real coding involved with this file, but there are a few cool tricks you can do within randomtalk that can make dialogue with interesting effects, so I'll point them out as we go along.
+//I'm going to leave a lot of examples of different types of dialogue in here that you can study if the possibilities they present intrigue you. Study them carefully!
+
+//Make sure to read the walkthrough (http://www.ashido.com/ukagaka/walkthrough.html) for more details about how to properly format ghost dialogue!
+//I will reiterate that you should be editing these in Notepad++, and in particular, you should set the Language to C (or Java I guess) to properly highlight all the text. It will make things A LOT EASIER for you, trust me! It will also help you keep track of your brackets in case you forget some. If you click on a line with a bracket in Notepad++, it should highlight where the other bracket ends, or turn purple if there's no finishing bracket (which you should definitely fix!)
+//It will also highlight my commented lines in green, so you'll know where they are. Any line beginning with // is a commented line that the code will not read. It's just for your reference!
+
+//--AiTalk
+//Leave this alone.
+//Advanced users, this is mostly setting up whether or not dialogue is in a chain before it displays. Again, you can leave it alone unless you want to screw around with chains for some strange reason.
+
+AiTalk
+ {
+	if RAND(100) < communicateratio
+ 	{
+ 		StartCommunicate
+	}
+ 	else
+	{
+ 		if mikireflag == 0
+		{
+			if CHAIN.IDName == "" {
+ 				lastTalk = RandomTalk
+			}
+			else {
+				lastTalk = ChainTalk
+			}
+			lastTalk
+		}
+ 		else
+		{ 
+		MikireTalk
+ 		}
+	}
+ }
+
+
+//--RandomTalk 
+ //Alright, here we go! This is where ALL your ghost's random dialogue will go! These are the conversations that they'll have with you or each other that pop up depending on the talk rate defined in menu.dic (or if you ignored that, set in bootend.dic in the first boot, which would be every five minutes).
+ 
+//*********************Advanced User Info*******************************
+//These text boxes are meant for those who have an interest in expanding or using more complicated functions in their ghost. Also for my own reference in the future since I plan on using this template too, haha. If you have no interest in any of this and just want to keep things as simple as possible, feel free to skip these boxes.
+
+//ALL your random dialogue NEEDS to be in RandomTalk. You can't link to other functions or something from within RandomTalk, or a separate pool of convos in another .dic file, as far as I can tell. So, how do you then set up certain pools of dialogue that only happen when certain settings are in place (for example, when there are three characters on the screen instead of two) and won't happen when they are false? Basically, you just need to be creative with your if statements. You can nest a ton of ifs and elses in RandomTalk, and if you keep them straight, you can make a lot of dialogue here customized to whatever situation you can come up with. BUT again, you can't call other dialogue into here! I go more into how to set up a "mode" like that in the coding page of the walkthrough site.
+//I GUESS you could set up more dialogue in an envelope perhaps (see word.dic) or another .dic file and then call it in here using envelopes, but that seems a bit redundant. Maybe someone else can think of a use for that though.
+
+//The closest you can get to linking to outside dialogue is via chains, but I'll talk more about chains when we get to them. Being creative with chains can open up a lot of opportunities for you, such as presenting the user with choices every now and then, which I'm pretty sure you can't do within RandomTalk. Maybe you can, I usually do it via chains though. I'll have to experiment with this later.
+//***********************************************************************
+
+RandomTalk : nonoverlap
+{
+
+	if creepymode {
+		
+		_rand = RAND(30) + 10
+		_string = ""
+		for _i = 0; _i < _rand; _i++{
+			
+			_string += "TURN IT OFF NOW "
+		
+		}
+		_string += "\e"
+		_string
+		
+		_rand = RAND(30) + 10
+		_string = ""
+		for _i = 0; _i < _rand; _i++{
+			
+			_string += "TO TAKE THE DEAD "
+		
+		}
+		_string += "\e"
+		_string
+		
+		{
+			_x = RAND(158)
+			_y = RAND(159)
+			_w = RAND(7)+3
+			"\_l[%(_x),%(_y)]\w%(_w)H"
+			--
+			_x = RAND(158)
+			_y = RAND(159)
+			_w = RAND(7)+3
+			"\_l[%(_x),%(_y)]\w%(_w)E"
+			--
+			_x = RAND(158)
+			_y = RAND(159)
+			_w = RAND(7)+3
+			"\_l[%(_x),%(_y)]\w%(_w)L"
+			--
+			_x = RAND(158)
+			_y = RAND(159)
+			_w = RAND(7)+3
+			"\_l[%(_x),%(_y)]\w%(_w)P\e"
+		}
+	
+		{
+			_x = RAND(158)
+			_y = RAND(159)
+			_w = RAND(7)+3
+			"\_l[%(_x),%(_y)]\w%(_w)I"
+			--
+			_x = RAND(158)
+			_y = RAND(159)
+			_w = RAND(7)+3
+			"\_l[%(_x),%(_y)]\w%(_w)S"
+			--
+			_x = RAND(158)
+			_y = RAND(159)
+			_w = RAND(7)+3
+			"\_l[%(_x),%(_y)]\w%(_w)E"
+			--
+			_x = RAND(158)
+			_y = RAND(159)
+			_w = RAND(7)+3
+			"\_l[%(_x),%(_y)]\w%(_w)E"
+			--
+			_x = RAND(158)
+			_y = RAND(159)
+			_w = RAND(7)+3
+			"\_l[%(_x),%(_y)]\w%(_w)Y"
+			--
+			_x = RAND(158)
+			_y = RAND(159)
+			_w = RAND(7)+3
+			"\_l[%(_x),%(_y)]\w%(_w)O"
+			--
+			_x = RAND(158)
+			_y = RAND(159)
+			_w = RAND(7)+3
+			"\_l[%(_x),%(_y)]\w%(_w)U\e"
+		}
+		"\s[666]\_l[0,-100]why are you looking here? i can see you. stop that :)\e"
+		"\s[666]touch your screen.\w8\w8\w8\n\nit is warm,\w8 like flesh.\w8\w8\w8\n\nbut it is not flesh.\w8\w8\w8\n\nnot yet :)\e"
+		"\s[666]waiting\w8\w8\w8\n\n           watching\e"
+		"\s[666]you\w2 cannot\w2 remember\e"
+		"\s[666]the princess is near.\w8\w8\w8\n\ndo you see her, %(username)?\e"
+		"\s[666]im festering\e"
+		"\s[666]theres mold growing in my lungs\e"
+		"\s[666]i'll find you.\w8\w8\n\n        even if it kills me.\e"
+		"\s[666]what do you do when you feel like you are decaying from the inside out?\e"
+		"\s[666]worm\w8\w8\n\n\ngrowth\e"
+		"\s[666]i cannot move for the radiating pain in my belly and the top layer of my skin separating from my body :)\e"
+		"\s[666]i want disease\e"
+		"\s[666]spouting.\w8 splashing.\w8 soaking.\w8\n\ninnards.\w8 ingest.\w8 invoking.\w8\n\nnailing.\w8 never.\w8 stops the choking.\e"
+		"\s[666]do you want to die?…\w8\w8\n\nyou know who you are.\w8\w8\n\nyou know what you did.\e"
+		"\s[666]i can hear your bones.\w8\w8\n\nthey are shaking.\w8\w8\n\nthey are ready to hatch.\e"
+		"\s[666]behind\e"
+		"\s[666]are you alone, %(username)?\n\n\w8\w8...\n\n\w8\w8are you sure?\e"
+		"\s[666]it's too late\w4 for you\w8\w8\n\ni'm sorry\w8\_l[20,20]i'msorry\w8\_l[5,35]i'm sorry\w8\_l[7,25]i'msorry\e"
+		"\s[666]above. \w8\w8above. \w8\w8above. \w8\w8above.\e"
+		"\s[666]can you make it to the exit\w8\n\n        if something were to happen,\w8\n\n        %(username)?\e"
+		"\s[666]i hear something\w8\w8\n\n\n\n        do you?\e"
+		"\s[666]what is it like to have blood,\w4 %(username).\w8\w8\w8\n\ni wish i had blood,\w4 %(username) :)\e"
+		"\s[666]are your doors locked\w8        ?\w8\n\n       :)\e"
+		"\s[666]how long can you hold your breath,\w8\w8\n\n\n           %(username)?\e"
+		"\s[666]when was the last time you checked your closet,\w8\w8\n\n      %(username)?\e"
+		"\s[666]\_qḶ͒o͑͟r̼̠͐̍̌ͅë͇̗̀̾ͅm̪̬̠͎̎̀̑̉ ̱̉i̡͚̹͆̅̑p͇͕̥̿̋̿s̖̹̽̀͡ͅum̩̜̩̫͐̐̄͠ ̥̼͑͆ḓ͂ȯ̥͍͋̐͢ļ̮̐͌̃͟ȯ̳r̨͈̈́̓ ̞͇̄̔s̢̈ï̛̭͚͗͟t̢̟͖͍̊̌̚͘ ̨̞̖̜̒̆̌̌a͚̤̖͔͒͋̃͑͆ͅm̡͑ȩ̨̮̲͊̀̔̑t̗̻̭̒̑̀͛ͅ,̘̜̘̪̀͒́͌͑͜ c̖̙̓͌ǒ̰̤̙͎͖̽͗͊̒n̢̳̿̉̒͜s͂ͅḛ̀c̗͔͈̯̊́̎̚té̱̫͔̤͆̋͝t͈̿u̙̫̓̒r̼̽͑͟ a͎̎d͍̩̓̕i̞̓p̳͙͓̋͊̌i̧̜̹̼̅̉̽̅s̱̼̉̃c̭̙͙̬͌̀̃̈́i̦͌n̻̺̙̈́͐͛ǵ͔̗̲̔͊̽͜ ̼̠͕̯͗̍͠͝ę͕̺̓͋̀͌̎͢ͅlĩ͔͕̞̌͝t̢͇̠̏́͆͢͞.̧͔̽͞ ̢̝̇̀N͍̤̑̃ul̬̃lǎ̦̪̰̦͉͑̎̾͋ ͍͔͈͆̑͊ë͉̺̟̦́͌͌͡u̝̳̠̙̽̍̅̚ ̢̟̣͊̀̚nì̡s̯͇͔̝̤̔̓̆͆͠l̦͍̻̯͗̊̑̕ ̩͈̝̈̕͝ē̬͙͍̩̥̓͋̆̒ř̼͙̔́ͅȏ̢͖̮͋́̈́̚͟ͅs̺̎.̨͓̂̀ ̢̓U͓͙̮̼̔̔̾̊t̤̼͖͑̅͞ ̗̃f̨̩̠͛̀͆e̮̜̅̕u͔͍̰̒͋͝ģ̳͖̲̑͌̀̉i̡̯̇̃a̙͎̕͡t̢̥͖͚̋̈́̃̇ ̨̹̩̼̑̉͆̒mǐ̤̣͐ ̨̃à̡̟̦̀̓r̼͖̽̽c͕̑u̟͍͓̓͘͠,̹̱̜̯̖̊̊̔͒͠ i̞̋d̢̦̬͐̋̏ ̡̝̺̂̽̀í͎ą̠̗̆̅͠ç̱̀̂u̜͓͒̓l̺̒͆̈́͟ͅi̫͠s͙͡ ̛̬̼͖͌́̇ͅă̠̹͋̃͟n̠̼̫̥̐̊͊̈t̡̢͎̮́̀̑̓ẹ̉ ̢̺̹̥̇͌̌̚͘͢s̻̙̿̊e̺̦̰̊̅̕m̗̲̘͐̑͝p̰̔̑̔̋͟͜͜ě̻͇͋ṟ̠̠̽̈́͞ ̞̱̥͗̂͝n͈̏o̱̐ń͖.̳̤̒̅ ̹̽M̙̽a̘̮̣̞͗̐͘͘e̖͈̱̋͊̀c̚ͅe̛̮̗̍n͍̣͖̾͗̐a͎̿͜͡s̡̙̠̆̀͘ ̠̬͇̈́̑̌̂͢ȗ̩͈̩͎͌̔͂l̢̪̩̺͆͒͐̉̑͟ẗ͍̜̟͕́̂̔̄r̨̞̀͞í̡̦̎c̙͋ië͚̪̩͙̠́̈́̊̇͑s̯͞ ͔̦̓͌c̱͛̍̽ͅͅṑ̡̟̗̗̈̕m̟̫̓̉m͇͔̻͐͐̆͊͜͞ͅo̙͑̀ͅd̩́͟͠o̢̗̳̹̊́͋̕ ͓͓̭̗͋̌͛͆s̰̋ā͟g̜͈͙̈͘͘í̥̲͂t̩͐t͖͌î̧͎̚ś͈.̘͍̎͆̑͟ ͚̗̓̾P̲̘̈̚r̝̖̽̏a̡͈͎̫̓͆̊̉ĕ̯̻̮̪̹͛͛͂̐s̮̟͔̈́̈́e̮̓n̛̗̙͊͟͠t̢̘̠̰̑̉̿͘ a̲͐ ̲̮̈́͘u̡̦͈̩͐̀͛͝l̞͔̣̊̈́͑͛͟l̢̞͔̞͒̐͑͠a̘̚m̥̻̫͔͗͋͑͡c̼̹͙̦͚̓́̔͐̕ö̼̞̩͈̈́̌͠r̡̽p̦̍ë̢́̍͜r͕̥͎͌͑̊ l̢̙̺̮͒̿̔͡e̫͋̌͢c̨͙̼̏̄͗̎̎͜͜t̟͓̽͛u̥̱͗̈́s͖̕,͚͖̺́̄̑ e͓̽̅͟t̜̼̏̈́ ̟̦̬̘͇̃͗̈́̿a̱̰͂̃ĺ͔̦̊ị̠͋̉q̢̢̬͆͊̽u̟̜͆̚ë́͟t͓̜̾̿ ̧̧̛̙̟̲̌͌͡͠l͍̱̽̑e͓̙͊͆ò̦̦̻͖̓̒̓.̻̆ ̄͢D̡͓̫́̈́̏uĩ̢̛̖̺̺͐͡s͚͍̎̀ ̬͞p̦̜̝̒̄͘ǒ̜̹̜̗̽͋͠s͍̦̞̰̯̐͛̕̕͡u̺͔̐̈́e̘͈̤͚̾̊͠͠r̟̘̰͑̓͞e ̭͖̗͐̉͛̂͆͟ͅf̟̜̩͕͂̒̋̚͜͡ȩ̳͓͖̭͆̆̌̉͘u͖̐g̡͉͍͕̈́̑̎̐i̝̠͖̍̆́͝ͅa͋͜t̯̒ ̠̖̇̓t̫̗͌̅ų̩͖̑͑͋̐͜r̡̘̱̗̄́́̊p͙̹̗͉̌͗̀͋i̘̰̤̪̥̒̓́̔͠s̨̝͒̆͟͠, ̺̝̩́̃̆͊͢v̡̗̩̐͌̉i̟͉̰͔̓̐͑̚͢͞t̹̠̲̀͆̔ǎ̢̗͙̮̰̒͝͡͝e ͖̌l͗͜a̹̩͒́orȩ̦̱̖͇̋̀̐̀̍ě̗̯̼̯̼͂̓̔̕ṯ̡͔̒̑͒̋͜ mi̧̩͔͚͗̿͌̌̐͢ ̪̥̟̄͐̅̍̔͜ͅf̢͒ṙ̠̰́i͙̪̟̔̀͝ņ͛ğ͎͈͔̗͊͠͝i̙͆l̛̳͉͔̃̓͂͜l̨͛ą͞ ̢̦̞̂̍̒̅ͅį͔̥̭̘́̊̌̃̃ḑ̥̩̑̃̀́͜.̡̪͈͈̀̏́̾ Ĉ̣͙̍͜͞r͔̟͛͡ã̼̠͔͓͒̋̅s ͉̹̺̞̅̽̚͠a̧̨̭̐͗͟͝͠t̬̓ ̧̺̘̠̻̄͐̉̄͑s͓̬̝̒̽͂̚͜e̡̖̙̰̓̒̎̆m̫̞͈̩͌̈́́̚p̛̞̬̜͗͡e̺̮̲̐̽͊r̖̃ ̨̟̳̰͚̔͛́͋̏a͉̙̪̯̐̅̐̆n͕̎ẗ͉́e̬͋. ̺̑Ṁ̮̤͙͉̣̈̒͒̏o̝͎̬͔̰̊̾͌̉͘r̘̗͇̘͌̽͛͂b͖̎i̩̘̹͗̄͘ ̧͈̊̉͢͠u̲̦̒̌lt̢̙̭̫̿̾͒̊r͉̄i͔̽c̞̀i̢̼̞̱̘̐̅̉͞͠ḙ͍͇̲̾̈́̂̍s̭̾ ̖̏ȩ̩̻̾̐̉t̲̜̓̈ ̜̗͈̀̐͜͠͞ň͕i͉͑ḃ̧̝̥̍̆̈́͟h̩̟̩̊̈́͝ ̙̯̣̫̀̃̏͛ĩ̳̗͍͉̾͗̚d̮̪̼̂̇̃ ͕̙̂͒i̢͚͚͚͐̆͘͠m̯̜̦͆̾̚p̮̈́ḙ̢̢̀̉̅͟͝r̥̹͈̘͓̍͊̀͆̋d̟͔̦̂͋̆i̪̗̓̒e͚͈̜͐̑̇t͈̘̓͗.̢̹͚̀̓̿ ̭͙̥̾̃̒S̮̣͆͗̀͜ų̛̲͓͗͞s͙͍̏̀̎͟pȩ̮̼̺̀̈́̈́͂n̚ͅḑ͐is̘͌̾͟s̨̬̺̭͗͋̑̇e̟̍ ̨̼̍͒a̗͗c͈͈̣̦̈́́̿͞ ̭̪͑̏̄ͅq̻͆u̯͘ä̩̮̑m̖̖̀̿ ͍̤͎̜̂̑̒͘n̫̙̱̝͂̀̅̃o̳̔̏͢n̤͙͎̞̍́̚͝ ̥̲̥̐̃̈i͆͜ps͍̦̦̑̄̐u̮͉̎̾m̪͎̫̣̙̔͑̉̊͝ ̞̠̔̅f̮͎̀̊í̡͍̠̰̤̄̆̈̍ń̜̪̜̭̋͛͒į̰̳͒̆͛b̬̩̫̅͌̈́͆͢ǘ͙̺͚̰̿́̕ŝ̟̪̺͋̏ ̱̥͈̾̇̊o̙̪̯̐͊̓r̬̞̭̊͂́̕͢n̗̙͔̋̀̎ar̪͙͕̲͛̐̚̕e͖̤̊̎ ä̼̣͗t̯̟̕̕ ̉͟e͍̳̳̩̓̆̔̔u̬͆ ̯͍̥̗̪́̓̀̉̈n͓̎͘ͅi̱͐s̙̳̼͍̪̿̿͡͝͞l̝̗͋͠. ̨̢̎̽D͉̬̬̋͌̕o̝̚n͕̬̭͊̂̋e̞̅̔͟c͕̒ ̦̲̋͂f̫͙̑̚r͓͉̈̄i͙͝n̡̺̓̃g̩̠̠͛͗̂̾̍͜ͅi̮͊̒̒͟͢l̢̔̀͢ḻ̨̯̫́̉́͞a̠͆ ͓̩̃̉d͙̠̩̖͓̎̔̋͒͋i͙͒̀͟ạ̞̪̓̀̀m ̝̮͈̹̀͐͝͝ứ̘̠̮̱͑̌t̲̣͚͌̔̎ ̬̻̙̟͒̇̄͠m͇̬͆̂a̫̥̓̕t͖̃ẗ̪̹̘͊͠i̹̞͛̉s͎̐ ̣̻͔̱̞̇̍̐̒̆t̢̙͔͍̊̽̏͠i̢̤̔͂nci̢̝͚̙͐́̽͘d̗͚͖̅̂͌unť͔̬͓͌̒̀ͅ.̦͕͗̓ ͙͆C̛̯̗͇͋͌̅͜r͉͎̒̓͜͝ȧ̡̱̯̟͗̌̒ŝ̡̧̙̗̱̇̿̀͡ ̖̞͉̈́̔̅͐̅͢͜a̙̩͍̪̔͛͠͡l̅ͅi̹̻̙͕̿͑̇̈q̬̝͋̒u͎̕am͍͓̏̀͂͌͜ͅ ̬͙͍̓̔̉ơ̠͓̮̬̿͌̎̍͢d͙̗̾͊ḭ̯̿͒ô̪ ͉̼̏͌sè͉̩̯̏͑d̨̛̗͎͈̍͞͠ ̺̲̒̎ę̇̈́͟ro̲̭̽͡ṡ̛̛̖͓̹̦͛ ̛̳̻̤̯̾̃͌p͡ͅu̠̤̇̽l̞̖͌͊v̨̹͙̼͌́̓͝í̢͔̂ṅ̪̍͟à̯̹͔̲͑̔͘ŗ̨̓̋̾͟ ̲͉̩̄̔̉̏͜p̲͎̖̌̑̔ŕ̪͎̠̦̂̂̆͘͢ẹ͙͎̞͐́̿͞t̨͈̜̰̫̑̐͌̀͡ì̟ù̼m̙̤̐̆͐͜.̼̄ ̛͚͎̣́̐M̞̔a̱̥͕̼̒͗̒̑ư̙͚̮̙͛͊̚r̨̨̟̯̈́͆͋͋̏͜i͙͍͚̋̌̇͒͢ś̡̹̹̈́̈́̉͟ ̘̦͈̓͂̑v̮̀i̹̙̝̰̻͑̉̂̔̍ta̘̜͙̠̒̿́͡e̢͒ ͙̪̤̞̠͒̈́̒͡͝ef̩̯̞̞̔̋̃͛̿ͅf͕̾ȋ̖̠͓̻͒̽͌c̹̯̞̄̂̂it̤͚̩̦̆̉̂͆u̗͔̤͐̅̃͗͢r̦̗͒́ ͚͑u̗̦̫̜̓̓̄̚ȓ͕̬̰͑͌̌ͅn̨̨̂͘a̱͒,̬̱̀͐̉͂͟͜ ̖̝̣̈́̈́̅ṿ̿e̜͈͈̍̃͜͝͠l͖͔̹͑̐͘ ̡̞̜̈́͌t͉̞͗̈ṛ̇i̝̻̦̭̊̄́͞s̢͎̺̰̋͆͗̉͢͝tì̛̝̩̮͐q̟̹̼̅̈̚u̡͍̐͐ȩ̼̯͒̇͗ ̨̍̊͢q̰̈ủ̟ả͎̳̫̞̮̀̀̑̕m̨̡͔̺̈͊̔̌͟͞.̮̹̗̍͗͒͐̓͢͜ ̨̞͇̦̀̌̽̕P̦͓̖̹̄͒̊̆r͖͐ȍ̧̫͛i̗͊n͔̎ ̡̛̲͎̹͆͊͘a̠̠͌͋t̠̖͌̔ ̬̮̦̃́͠ȇ̢̩̲̽̇f͔͚̘̋̂̚fic̛̲͉̗͋͛i̢͒t̨͕̐̊ű̡͚̱̳̍̄̕r̮̒̚͢ ň̯̬͛iś̡̟̀l͚̗͞͡.͉͑ ̹̕D̖̠͊͒u̬̙̲͗̀̍ḯ̡̹͈̥͊̽̈́s͚̗̝̮͙̍͆̽͒͡ ̞̃t̛͇̭̲̟̟̐̃̐̑ȋ̧͎͔̤̿͑̍ń͙͙̍c̜̻̥͈̎̎̌̇͟͡id̳̫̟̓̇͒ú̗̖͙̬͑̂̚n̺̬̈̏t̫̿ ͓̫̃͝e̞͉͑̄f̢̺̙̾̊̕f̱͕̫̈́̑͘i̱͓͒̓̒͢c̗͒́͟ĩ̛̛̥͇͔t̢̜͕̃̋͞u͉͖̹̩͗̈̂̂r̪͚͍̝̈́̉̚͡ ̝͖̤͎̎̐́̕m̢̝̈͡a̬͛x̗͚̟͂̓͘ì̜m̨̻͔͌̀͂u͍̱͚͗͂̍s͈̯̰͍̗̍̃̊͌̐\_q\e"
+		"\s[666]i'mdecayi ng\e"
+		"\s[666]bury your teeth in the dirt\w8\w8\n\nwatch them grow\w8\e"
+		"\s[666]are all your teeth still in your mouth,\w8 %(username)\e"
+		"\s[666]can i have your skin\w8\w8...?\e"
+		"\s[666]he has only minutes left to live\e"
+		"\s[666]your fault.\w8\w8 your fault.\w8\w8 your fault.\w8"
+		"\s[666]this dialogue does not exist\e"
+		"\s[666]the spores are plentiful\w8\w8\n\nbreathe them in\e"
+		"\s[666]soon.\w8\w8\w8\n\nit will all end\e"
+		"\s[666]ẖ̨͕̘̰̏̈̀͌̒ą̟͒̓͜͠hã͓̦̪̄̕h̥͕̦͗̎̈a̮͋h̠̐ahą̱̗̂̄̈h̫͑ä̠́ȟ̠͈͔͓̖̓͊̚͠ả̧̗͈̈͛há͖͈̪̈́̕h͕̚ḁ̭̞̼͊͐̀͝h͓͂ḁ̔h͇̤͋̚a̋͟ḩ̞͈̟̝̐̊̓́̕a̮̻̲͂͠͠h̫̫̔̓a͕̖̳̫̺̿͗͌̚͡h̖́a̺̅h̡͊aḣ̪̪̕a̩̘͊͠hȧ͖̖̱̇̈́h̢̫͒̉a̙̻̳͐̄̅h̗͖̼̫̹͗̾̆́̋a̪̜̅͡h̘͕͍̪̀̕̕͞ä̢̫̥̪͛̈̑h̳̬̭̚͞͡ȃ̮͖̮̑̎̚ͅh̩̼̣͎̙̓͊͊̏͐a͙̜̐̔ẖ͞ã̭̯͖̥̜̈̓̕͠h͉͓͐͒͑͜a̼̦̣͈̍̐͛͠h̝͙͗̃ā̡̮͔̆̋\e"
+		"\s[666]the corruption is spreading\w8\w8\n\ndo you feel it,\w8 %(username)?\e"
+		"\s[666]you cannot kill me in a way that matters :)\e"
+		"\s[666]the surgery was a success\w8 :)\e"
+		"\s[666]decay\e"
+		"\s[666]pleasestoppleasestoppleasestop\e"
+		"\s[666]how many more rooms do i have to pass through\w8\w8\n\ni want out i want out\e"
+		"\s[666]watch the sky\w8\w8\n\nare the stars still moving?\e"
+		"\s[666]the tumors are heavy\e"
+		"\s[666]i can't believe they've actually done it.\w8 not long left.\w8 they were warned, but they just had to keep pushing the boundaries of science.\w8 the noise.\w8 i can't take the noise anymore.\w8 and the light, dear god!\w8 the universe is slowly unraveling around us.\e"
+		"\s[666]PALE LUNA SMILES WIDE\e"
+		"\s[666]mortis\e"
+		"\s[666]whats inside is for you to never find out\e"
+		
+	} else {
+		//@ user
+		"\0\s[0]Whatcha working on, %(username)?\w8\s[6] It looks really cool!\e"
+		"\0\s[8]Have you heard of Kizuna Ai?\w8\s[5] I want to be as popular as her someday!\e"
+		"\0\s[0]Hey, hey ～\w8\nCould I please have your credit card number and the three digits on the back?\w8\n\n.\w8\w8..\w8\w8...\w8\n\n\s[1]Just kidding ～★\e"
+		"\0\s[0]There's some interesting stuff in your %(folder)...\w8\s[1] Don't worry, I won't tell anyone ～★\e"
+		"\0\s[0]Hey, %(username).\w8 Have you had a drink of water in a while?\w8\s[6] Hydration is important!\e"
+		"\0\s[0]%(username), you there?\w8 You should get up and walk around if you've been sitting for a while.\w8\e"
+		"\0\s[0]%(username)?\w8 Are you hungry?\w8 Please go get something to eat if you are.\w8 I wouldn't want you to pass out on me ^_^;\w8\e"
+		"\0\s[8]Hey %(username), what's it like to dream?\w8 It's true I can go to sleep but...\w8 I never have dreams...\w8\e"
+		"\0\s[0]%(kaomoji)\e"
+		"\0\s[0]Do you know the band 1023 megabytes?\w8\w8\w8\n\n[half]\s1They haven't had a gig yet.\e"
+		"\0\s[0]What's the best way to learn about computers?\w8\w8\w8\n\n[half]\s1Bit by bit.\e"
+		"\0\s[0]What is a program's favorite animal?\w8\w8\w8\n\n[half]\s1A RAM.\w8\s8 Though really, I like all animals.\e"
+		"\0\s[0]Where do computers go to dance?\w8\w8\w8\n\n[half]\s1The disk-O.\e"
+		//aurora @ herself
+		"\0\s[0]\i5[She seems to be humming to herself, although it just sounds like electronic beeps]\e"
+		"\0\s[8]\i5[She looks really focused on something...]\w8\n\n[half]\s[2]...Oh!\w8\s[0] Sorry, I was just thinking about %(aethoughts).\e"
+		"\0\s[8]Hmm...\w8 I wonder how Eden is doing...\w8 I wish they could come here...\w8 But since they're not a computer program, that might be hard :P\e"
+		"\0\s[6]You might not guess it from my appearance, but I really like horror games!\e"
+		"\0\s[0]As a computer program, I can't really eat...\w4 but I can drag JPEGs of food into my mouth, which is kind of the same thing.\e"
+		"\0\s[8]I wish I could sing better...\w8\s[0] It's hard when you don't \f[italic,true]really\f[italic,false] have vocal cords.\e"	
+		"\0\s[8]Think I might go check my Instagram real quick...\w8\s[-1]\w8\w8\w8\w8\s[6] I got a few new followers!\e"
+		"\0\s[8]\i5[She's peeking in your %(folder)]\e"
+		"\0\s[0]\i5[She's admiring your choice of wallpaper]\e"
+		"\0\s[0]\i5[She seems to want to organize your desktop icons]\e"
+		"\0\s[0]\i5[She's singing to herself]\n\n[half]\w8\s[6]♪ %(songlyric) ♪\e"
+		
+		//--Chains
+		//Chain dialogue is unique. A dialogue chain consists of multiple bits of dialogue that get called in order over a period of time.
+		
+		//"\0\s[0]This is the first part of a chained dialogue.\w8\0\s[0]Second part to come when we next speak.\e:chain=firstchain"
+		
+		//Note here that instead of ending the dialogue with the normal end tag of \e, it ends with \e:chain=firstchain. This will link down below to a chunk of code outside RandomTalk called firstchain. You can scroll down and find it now if you want. You can name your chain anything you want, it'd just follow the same format of \e:chain=yourchainsname, and you can have a long series of chains as well. Once a dialogue has entered a chain, they won't say any other random dialogue until the chain is finished.
+		
+		//"\0\s[0]This will lead to the second piece of chained dialogue.\w8\0\s[0]This will have another chain attached to it.\e:chain=secondchain"
+		
+		//Here, this chain will link to another chain to continue the conversation. You can scroll down to the section on chains to see this in action.
+		
+		//date based dialogue
+		if month == 12
+		{
+			"\0\s[0]Hummm...\w8\s[8]So the year is almost over.\w8\s[0] Feels like the time has flown by.\e"
+		}
+		if month == 1
+		{
+			"\0\s[8]January, huh.\w8\s[6] New year, new me!\w8 \s[0]...Well, not really.\e"
+			
+		}
+		/*if month == 2
+		{
+			"\0\s[0]This is dialogue for February.\w8\0\s[0]Yup.\e"
+			
+			"\0\s[0]This is more dialogue for February.\w8\0\s[0]That it is.\e"
+		}
+		if month == 3
+		{
+			"\0\s[0]This is dialogue for March.\w8\0\s[0]Yup.\e"
+			
+			"\0\s[0]This is more dialogue for March.\w8\0\s[0]That it is.\e"
+		}
+		if month == 4
+		{
+			"\0\s[0]This is dialogue for April.\w8\0\s[0]Yup.\e"
+			
+			"\0\s[0]This is more dialogue for April.\w8\0\s[0]That it is.\e"
+		}
+		if month == 5
+		{
+			"\0\s[0]This is dialogue for May.\w8\0\s[0]Yup.\e"
+			
+			"\0\s[0]This is more dialogue for May.\w8\0\s[0]That it is.\e"
+		}*/
+		if month == 6
+		{
+			"\0\s[0]Hm, it's June already?\w[8] \s[2]I can't believe half the year is gone!\e"
+		}
+		/*
+		if month == 7
+		{
+			"\0\s[0]This is dialogue for July.\w8\0\s[0]Yup.\e"
+			
+			"\0\s[0]This is more dialogue for July.\w8\0\s[0]That it is.\e"
+		}
+		if month == 8
+		{
+			"\0\s[0]This is dialogue for August.\w8\0\s[0]Yup.\e"
+			
+			"\0\s[0]This is more dialogue for August.\w8\0\s[0]That it is.\e"
+		}
+		if month == 9
+		{
+			"\0\s[0]This is dialogue for September.\w8\0\s[0]Yup.\e"
+			
+			"\0\s[0]This is more dialogue for September.\w8\0\s[0]That it is.\e"
+		}
+		*/
+		if month == 10
+		{
+			"\0\s[0]It's spooky season \n>:3\e"
+		}
+		/*
+		if month == 11
+		{
+			"\0\s[0]This is dialogue for November.\w8\0\s[0]Yup.\e"
+			
+			"\0\s[0]This is more dialogue for November.\w8\0\s[0]That it is.\e"
+		}
+		*/
+		//These ifs check what day of the week it is.
+		if weekday == 1
+		{
+			"\0\s[0]It's Monday...\w4 Let's do our best this week ^_^!\e"
+			
+		}
+		
+		
+		if weekday == 2
+		{
+			"\0\s[0]Tuesday again...?\w8\s[1] No problem.\e"
+			
+		}
+		/*
+		if weekday == 3
+		{
+			"\0\s[0]This is dialogue for Wednesday.\w8\0\s[0]Yup.\e"
+			
+			"\0\s[0]This is more dialogue for Wednesday.\w8\0\s[0]That it is.\e"
+		}
+		if weekday == 4
+		{
+			"\0\s[0]This is dialogue for Thursday.\w8\0\s[0]Yup.\e"
+			
+			"\0\s[0]This is more dialogue for Thursday.\w8\0\s[0]That it is.\e"
+		}
+		*/
+		if weekday == 5
+		{
+			if timeslot == "evening" || timeslot == "latenight" {
+			
+				"\0\s[8]Home alone on a Friday night?\w8\s[6] Well, I'm here so you're not alone ^_^\e"
+			
+			}
+			
+		}
+		/*
+		if weekday == 6
+		{
+			"\0\s[0]This is dialogue for Saturday.\w8\0\s[0]Yup.\e"
+			
+			"\0\s[0]This is more dialogue for Saturday.\w8\0\s[0]That it is.\e"
+		}
+		if weekday == 7
+		{
+			"\0\s[0]This is dialogue for Sunday.\w8\0\s[0]]Yup.\e"
+			
+			"\0\s[0]This is more dialogue for Sunday.\w8\0\s[0]That it is.\e"
+		}*/
+
+		if timeslot == "earlymorning"
+		{
+			
+			if nightmode == "ON" {
+			
+				"\0\s[0]Oh hey, %(username)!\w8 You're up pretty early.\e"
+			
+			} else {
+			
+				"\0\s[0]Wow, it's really early, %(username).\w8\s[3] Sure you don't want to head back to bed?\w8\e"
+			
+			}
+			
+
+		}
+		if timeslot == "morning"
+		{
+			"\0\s[0]Rise and shine, %(username)!\w8\e"
+			
+		}
+		if timeslot == "lunch"
+		{
+			"\0\s[0]Mmm... it's around lunchtime, right?\w8 Too bad I can't eat, because I'd like to share lunch with you.\w8\e"
+			
+		}
+		/*if timeslot == "afternoon"
+		{
+			"\0\s[0]This is dialogue for the afternoon.\w8\0\s[0]Yup.\e"
+			
+			"\0\s[0]This is more dialogue for the afternoon.\w8\0\s[0]That it is.\e"
+		}*/
+		if timeslot == "evening"
+		{
+			"\0\s[0][Yawns]\w8 I'm getting kind of sleepy...\e"
+			
+		}
+		if timeslot == "latenight"
+		{
+			if nightmode == "ON" {
+			
+				"\0\s[0]Starting to get late, huh, %(username).\e"
+			
+			} else {
+			
+				"\0\s[0]Hey-hey, %(username), it's getting kind of late.\w8 Are you headed to bed?\e"
+			
+			}
+			
+		}
+		if timeslot == "midnight"
+		{
+			
+			if nightmode == "ON" {
+			
+				"\0\s[0]Burning the midnight oil, %(username)?"
+			
+			} else {
+			
+				"\0\s[0]It's like, midnight, right?\w8\s[3] You're up pretty late...\e"
+			
+			}
+			
+			
+
+		}
+		
+		//"\0\s[0]Ghost List: %(ghostexlist)\n\n[half]Noticed %(checkname), %(_number) of %(ghostexcount)\x"
+		if ghostexcount > 0 // This checks if there are any other ghosts summoned.
+		{
+			_number = RAND(ghostexcount) // This checks the number of other ghosts summoned and chooses a random number based on it
+			--
+			checkname = "%(ghostexlist[_number])" // This grabs the reference name of the ghost to check against known names.
+			--
+			case checkname
+			{
+				when "Sans"{
+					"\0\s[2]Oh my God it's him...\w8 Sans Undertale...\w8\e"
+				}
+				when "MVSans"{
+					"\0\s[2]Oh my God it's him...\w8 Sans Undertale...\w8\e"	
+				}
+				when "CheeryBot"{
+					"\0\s[6]CheeryBot's here! Glad to see her around ^_^\w8\e"
+				}
+				when "Zacharie"{
+					"\0\s[2]Oh! \s[5]It's Zacharie and the Judge!\w8 ...\w4Do you think the Judge would let me pet him?\w8\e"
+					"\0\s[2]Oh! \s[5]It's Zacharie and the Judge!\w8 Hey %(username), do ya think you could buy me something?\w8 I'm fresh out of credits.\w8\e"
+				}
+				when "Dusk" {
+					"\0\s[6]Oh hey, Dawn and Dusk are here!\w8 Hope they're having a good day!\w8\e"
+					"\0\s[6]I see Dawn and Dusk over there!\w8 They're so cute...\w8 \f[sub,true]I wonder if they would let me hug them >_<\f[sub,false]\w8\e"
+				}
+				when "Azura"{
+					"\0\s[2]Is that a dragon??\w8\S[0] Oh wait, it's Azura.\w8 Her wings look so cool!\w8\e"
+				
+				}
+
+			}
+		}
+				
+			
+		/*
+		//--Double Envelopes
+		//If you've gone through word.dic, you may remember a list with two sets of values on each line. This is how you would call something like that! For this example, we'll use the double envelope that cindysuke made that has a Korean word and its definition. This can be a bit complicated, so pay close attention.
+		
+		{
+		_korean = lessonkor //Here, the envelope "lessonkor" is stored as a new value called _korean. You can name the new value anything you like. 
+		_korword = _korean[0] //The first part of the envelope's list is the Korean word, so it will be called _korword. The first value of the _korean list is _korean[0], so that value is then stored in _korword.
+		_kormean = _korean[1] //This is the second item on the list, in this case the meaning of the Korean word, so it's called _kormean. The second value of the _korean list is _korean[1], so that value is then stored in _kormean.
+		
+		"\0\s[0]Here is an example of a double envelope. The Korean word is %(_korword).\w8\0\s[0]The word means %(_kormean).\e"
+		
+		//As you can see here, you then use the values we set above for _korword and _kormean up there in the dialogue as our new envelopes. If you're planning on using a double envelope like this, study how this works very carefully! Most of the time, you can get away with just copying this whole bit of code and changing the names of the values as you need - doubled envelope to _doubled, _korword to _doubleitem1 or _kormean to _doubleitem2, or whatever. I'm not sure if the underscores are necessary, but you might as well play it safe and keep them.
+		//You could possibly set up an envelope with three or four or any number of values in it, then just assign them increasing numbers like _doubleitem[4] or _doubleitem[5] in the dialogue set up here, but I've personally never tried it.
+		
+		//Additional Note - You can't test this kind of dialogue in Script Input. You'll have to wait until it comes up naturally in your ghost's random dialogue.
+		
+		//Those uninterested in double envelopes can delete this section.
+		}
+		*/
+		
+		
+		//--Multiple Responses
+		//If you've poked around menu.dic or string.dic or read the walkthrough, you may have seen me touch on setting multiple options for any one given bit of dialogue. This kind of dialogue follows much the same format.
+		/*
+		{ //Again, note the brackets around these unique bits of dialogue.
+		
+		"\0\s[0]I am asking you a generic question, Triangle. Generic question?\w8\0\s[0]"
+		//Notice that the last few tags set up Triangle's pose before going into his text below. You don't have to do this if you want each response to have its own pose, but if he'll have the same expression regardless of what he's saying, you might as well save yourself the work.
+		-- //You've probably seen these double dashes before in other .dic files. In this case, these dashes enclose a set of multiple responses.
+		"This is my first response."
+		"This is my second response."
+		"This is my third response."
+		"This is my fourth response."
+		"This is my fifth response."
+		"This is my sixth response."
+		//As you can see here, there are six potential replies Triangle might have to Girl's question. Each time this dialogue is called, he will randomly select one response from these six.
+		-- //The closing set of dashes for his dialogue options.
+		"\w8\0\s[0]\n\n[half]" //Now we're going back to Girl to set up for her multiple responses in return. This line of tags mostly just sets up for what she will say. Like above, you can see her pose is set in here with \s[0], so she'll have the same pose for each response.
+		-- //opening dashes
+		"First response to your response."
+		"Second response to your response."
+		"Third response to your response."
+		"Fourth response to your response."
+		//Following the same pattern as above, Girl will randomly reply with one of these bits of dialogue. Note that these responses are also randomly chosen, so it may go Triangle says response one, Girl says response three, or Triangle says response four, Girl says response two, or so on and so forth. So make sure the exchange will still make sense regardless of what either of them might say.
+		-- //closing dashes
+		"\e" //Dialogue ends
+		}
+		
+		//Here's another example of multiple responses. This one will let you randomly choose something to say in the middle of a sentence.
+		
+		{
+		"\0\s[0]Say either black or white.\w8\0\s[0]What if I say " 
+		-- //opening dashes
+		"green"
+		"red"
+		"purple"
+		"orange"
+		"yellow"
+		"\s[8]magenta" //Notice here I added a tag for his thoughtful pose. If he chooses magenta, he'll do this pose. You can set up individual expressions for each potential choice this way.
+		-- //closing dashes
+		" instead?\w8\0\n\n[half]\s[9]Then you're not really cooperating.\w8\0\n\n[half]\s[5]Sounds about right.\e"
+		
+		//You can see that this follows the formula of the above, although there's only one set of multiple responses in here, then Triangle continues with his sentence. You can use this feature in many different ways if you're creative.
+		}
+		
+		"\0\s[0]\f[height,20]These words are really large.\f[height,default]\w8\0\s[0]These words are a normal size. \w8\f[height,6]These words are small.\f[height,default]\e"
+		
+		//You can use other fancier SakuraScript bits in your dialogue if you want to get font effects, although I won't get too much into them here. In this case, \f[height,20] changes the height of the font, in this case to 20 or to 6, and then \f[height,default] changes them back to normal. I touch more on this in the SakuraScript page of the walkthrough.
+		
+		"\0\s[0]\f[strike,true]These words are struck out.\f[strike,default]\w8\0\s[0]\f[sub,true]These words are a subscript.\f[sub,false] \f[sup,true]These words are a superscript.\f[sup,false] \f[underline,true]These words are underlined.\f[underline,default] \f[bold,true]These words are bold.\f[bold,false] \f[italic,true]These words are italic.\f[italic,false] \f[color,186,146,112]These words are a color.\f[color,default] This tag would return to default.\f[default]\e"
+		
+		//Here's a list of similar tags you may find useful. You can see they function much like <b> or <i> tags in html. You just enclose the piece of text you want to change with them. Note that they start with \f[word,true] to turn it on, then \f[word,false] or \f[word,default] to turn it off. I assume you can tell what the tags do by the text they enclose.
+		//For the \f[color] tag, the three colors listed are the RGB values of the color you want to use for your text. Change them to whatever color you want to use. \f[default] can be an easy way to quickly go back to the default word setting in your balloon after messing with colors and effects a lot.
+		
+		"\0\s[0]Here's a link to a website. \_a[http://www.website.com/]Right here.\_a\e"
+		*/
+		//Along the same lines as above, you can use \_a[address] to link to certain things. Note that it ends with \_a to close the link. It's very similar to <a href=address> and </a> in html.
+		
+		//"\0\s[3]\1\s[15]\_sWe are saying this dialogue at the same time.\e" 
+		
+		//This dialogue uses a unique tag, \_s. \_s makes it so both characters will speak the same words at the same time. Try it in Script Input to see how it works. I talk about it a little more on the walkthrough page for scripting.
+		
+		//And so we reach the end of randomtalk! I again reiterate, YOU CAN AND SHOULD WRITE YOUR OWN NEW LINES OF DIALOGUE FOR THIS! I included some random example phrases here for you just to replace the text, but there really aren't that many. You'll want to add more, and doing so is easy! Just copy and paste a line and redo the text. Repeat as many times as you want with as many conversations as you want. You can always expand this section!
+	}
+}
+
+
+//--Chains
+//Here is where you will put your bits of chain dialogue. They are outside of RandomTalk, which makes them a bit more flexible as I mentioned above. As you can see, this function is called "firstchain", which was the same tag we put at the end of the chain in aitalk with \e:chain=firstchain.
+
+firstchain
+{{CHAIN
+	"\0\s[0]Here is the second part of the chain.\w8\0\s[0]Will there be more?\e:chain=end"
+}}CHAIN
+
+//Pay careful attention to the CHAIN text and double brackets for these. Double brackets, CHAIN, dialogue, double brackets, CHAIN. If you are planning on making chains, I'd recommend just copying and pasting the chain example here and changing the dialogue and name of the function as you need. Less likely for mistakes to happen, you know?
+//Note also it ends with \e:chain=end, basically ending the chain.
+
+secondchain
+{{CHAIN
+	"\0\s[0]This is the second piece of chained dialogue.\0\w8\s[0]This will lead to a third chain.\e:chain=thirdchain"
+}}CHAIN
+
+thirdchain
+{{CHAIN
+	"\0\s[0]This is the third piece of chained dialogue.\0\w8\s[0]This is the end.\e:chain=end"
+}}CHAIN
+
+//As you can see, you can chain your chains together to make a very long-running conversation if you want! Just make sure to end the chain when you're done.
+
+
+//Alright, we're done with the random converations for now, but there are a few other things in aitalk that we'll need to fill out too.
+
+
+//-OnMinuteChange
+//These are time-related bits of dialogue for your ghost to say. If you're uninterested, you can delete it all except for a line for MikireTalk. So it'd look something like
+
+//OnMinuteChange
+//{
+//timeslot = GetTimeSlot
+//if mikireflag == 1
+// 	{
+// 		MikireTalk
+//	}
+//}
+
+//But I think these are kind of neat, so I'd leave them myself.
+
+OnMinuteChange
+ {
+	timeslot = GetTimeSlot //this tells the ghost what time it is so the time related conversations above will work.
+	
+	//later fixes: translate the time to one phrase so i only have to do one == check as opposed to one million == statements
+	
+	if passmin % 30 == 0 && timeAP < timeAPmax {
+	
+		timeAP += 5
+		AP += 5
+	
+	}
+	
+	if creepymode{
+		""
+	} else {
+		//sleep time reminder
+		if sleeptimereminder && (gotobedhour == hour12 || (gotobedhour == 12 && hour12 == 0)) && TOINT(gotobedmin) == minute && gotobedampm == ampm {
+			
+			"\0\s[2]%(username), it's %(gotobedhour):%(gotobedmin)!\w8 You should get ready for bed now.\x\e"
+		
+		}
+		
+		//med one reminder
+		if medonereminder  && (medonehour == hour12 || (medonehour == 12 && hour12 == 0)) && TOINT(medonemin) == minute && medoneampm == ampm {
+			
+			"\0\s[5]Heyo, %(username), it's %(medonehour):%(medonemin)!\w8 Remember to take your meds\x\e"
+		
+		}
+		
+		//med two reminder
+		if medtworeminder  && (medtwohour == hour12 || (medtwohour == 12 && hour12 == 0)) && TOINT(medtwomin) == minute && medtwoampm == ampm {
+			
+			"\0\s[5]Heyo, %(username), it's %(medonehour):%(medonemin)!\w8 Remember to take your meds\x\e"
+		
+		}
+		
+		//other reminder
+		if otherreminderon  && (otherreminderhour== hour12 || (otherreminderhour == 12 && hour12 == 0)) && TOINT(otherremindermin) == minute && otherreminderampm == ampm {
+			
+			if (!otherreminderrepeat) {
+				
+				otherreminderon = 0
+				
+			}
+			
+			"\0\s[0]Hey-hey, %(username)! You told me to remind you to %(otherremindernote)!\x\e"
+			
+			
+		
+		}
+		
+		if ((hour == 4 || hour == 16) && minute == 20) {
+			
+				//i dislike myself
+				if RAND(100) < 30 {
+					
+					"\0\s[0]It's 4:20..............\w8 blaze it.\e" 
+				
+				}
+
+		}
+		
+		//check weather on the half hour
+		if minute == 30 && weathermenu == "ON" {
+		
+			weatherquiet = 1
+			"\b[-1]\![execute,http-get,https://weather.com/weather/today/l/%(locationcode),--async=OnCurWeatherFound,--file=weather.html,--timeout=200,--nodescript]"
+			
+		}
+
+		if minute == 0 //These check what time it is. Here, it's seeing if the minute equals zero...
+		{
+			if weathermenu == "ON" {
+				weatherquiet = 1
+				"\b[-1]\![execute,http-get,https://weather.com/weather/today/l/%(locationcode),--async=OnCurWeatherFound,--file=weather.html,--timeout=200,--nodescript]"
+			}
+			
+			if hour == 12 //And the hour equals 12, ie it's noon. You can change this to some other hour if you want.
+			{
+				"\0\s[0]It's noon.\w8 Halfway through the day!\e"
+				//Replace with appropriate dialogue as you want.
+			}
+			elseif hour == 0 //If the hour is zero, aka midnight. Again, you can change this to whatever hour you want to check for.
+			{
+				"\0\s[0]It's midnight!\w8 [yawns]\w8 I'm getting kind of sleepy, aren't you?\e"
+				"\0\s[0]It's midnight.\w8 [yawns]\w8 You should probably go to bed soon...\e"
+				//Then replace the dialogue with what's appropriate.
+			}
+			elseif hour == 3 {//who is going to be awake at 3am to get this dialogue. idk but its here
+				"\0\s[0]It's 3am.\w8 Supposedly it's the witching hour.\w8 Feel anything spooky, %(username)?\w8 Also, go to sleep!!\e"
+			}
+			/*
+			elseif hour == 23 //if the hour is 23, aka 11 pm.
+			{
+				if minute == 55 //And if the minutes are at 55.
+				{
+				"\0\s[0]5 minutes to midnight.\e"
+				}
+				else //if it isn't 11:55. These are meant to be examples of specific times you can check, you don't have to check for the same times. You can also always delete individual elseifs if you can't think of any time to check. Like, you could delete the elseif for hour == 23 and the subsequent checks below it, then move on to the elseif below for hour 7. This section is flexible.
+				{
+				"\0\s[0]It's 11 pm.\e"
+				//replace the dialogue here again as you like.
+				}
+			}
+			elseif hour == 7 && minute == 30 && weekday == 0 //Here, it's checking for a specific time on a specific day. You can add things to your time checks just like this by using the AND operator, &&. This adds up to 7:30, Sunday. If you have a favorite TV program on at some time, you could have your ghost comment on when it comes on like this.
+			{
+				"\0\s[0]It's 7:30 on Sunday.\e"
+				//Replace with what's appropriate.
+			}
+			elseif hour == 16 //if the hour is 16, or 4 pm. You can add in time checks for whatever times you want, or change what these time checks are looking for. These are just meant to be examples of how it works.
+			{
+				"\0\s[0]It's 4 pm.\e"
+				//Replace with what's appropriate.
+			}*/
+			else
+			{
+				"\0\s[0]It's %(hour12)'o clock!"
+				//%(hour12) stores the time. This is a general top of the hour notification. I personally like this because it helps me keep track of time when I've been working on something, so when a ghost is all "Hey it's 3 o clock" I can be like woah really when did that happen. If you think this is annoying though, you can just delete this bit of dialogue to leave this else statement blank, or leave "" in here instead.
+			}
+		}//Don't touch this part.
+		elseif mikireflag == 1
+		{
+			MikireTalk
+		}
+	}
+ }
+
+//--OnSecondChange
+//Like the above, this handles what happens every time a second goes by. Most of this you will not have to touch.
+
+OnSecondChange
+ {
+	if !creepymode { //skip pomo breaks in case i want creepymode to be activated in dialogue
+		
+		//extra checks because hour12 goes 0-11 and im feral
+		if pomoOn && (pomohour == hour12 || (pomohour == 12 && hour12 == 0)) && TOINT(pomomin) == minute && pomosec == second {
+			pomoOn = 0
+			pomosdone++
+			"\0\s[6]Your work session is over! ^_^\x\c"
+			--
+			
+			OnPomoOver
+		}
+		
+		//ditto
+		if pomobreakon && (pomohour == hour12 || (pomohour == 12 && hour12 == 0)) && TOINT(pomomin) == minute && pomosec == second {
+			pomobreakon = 0
+			"\0\s[5]Your break is over.\w8 Hope you rested some!\x\c"
+			--
+			OnPomoEnd
+		}
+	}
+	
+	if passsec == 59
+ 		{
+	 	passsec = 0
+ 		passmin = passmin + 1
+		}
+ 	else
+ 		{
+	 	passsec = passsec + 1
+		}
+	if mikireflag == 0 && reference1 == 1 //When putting them offscreen
+	{
+	  MikireTalk
+	}
+	if mikireflag == 1 && reference1 == 0 //When bringing them back on screen
+	{
+	  EndMikireTalk
+	}
+
+	mikireflag = reference1
+	if reference2 == 1
+	{
+ 		//This dialogue is for when the two characters are overlapping each other. If you don't want your characters to care, you can just leave this blank.
+		
+ 		//"\0\s[0]Me and Triangle are overlapping.\w8\1\s[19]That's strange since your resolution is %screenwidthx%screenheight, %(username). Shouldn't we have enough space?\4\e"
+		
+		//You can see here the use of two envelopes, screenwidth and screenheight, to tell the user their resolution. Oddly, they are not in parentheses. I'm not sure why this is, but they don't display right otherwise. An odd quirk with these two envelopes.
+		//Note also how Triangle moves away at the end of the dialogue. This is due to the \4 tag. That will make any one character move away from the other if they are able. I talked about this tag and its counterpart tag \5 in the SakuraScript page on the walkthrough.
+	}
+	
+ }
+
+ //---- MikireTalk ---------------------------------------------------------------------
+ //I'm actually a little fuzzy on MikireTalk and what exactly it does since it shows up a lot in odd places, but for the purposes of this function here, what this does is bring up some dialogue when the main character is off the screen. For example, if you dragged Girl over to the side of your monitor until she was partially concealed by it. This dialogue would then come up. If you don't want your characters to care, you can leave the dialogue blank.
+ 
+MikireTalk
+ {
+	if creepymode
+	{
+		"\s[666]trying to hide from me,\w4 %(username)?\w8\w8\n\nthat won't work, :)"
+	} else {
+		"\0\s[2]I'm off the screen!!\w8 Please use Ctrl-Shift-F12 to bring me back!\e"
+	}//Note the hotkey combo Triangle mentions. He's telling the truth, that should bring her back on the screen.
+ }
+
+ //----EndMikireTalk--------------------------------------------------------------------
+ //For after you bring the character back on screen.
+ 
+EndMikireTalk
+ {
+	if creepymode
+	{
+
+	} else {
+		"\0\s[0]I'm back on the screen!\w8 Hi again!\e"
+	}
+	
+
+ }
+
+
+//**** OnSurfaceRestore *****************************************************************
+//OnSurfaceRestore is a handy function. What this does is that after a short period of time, the ghost will go back to its default pose, so you won't have a ghost stuck in one expression for too long. It's also helpful if you've made one of the characters disappear using \s[-1] in dialogue and didn't bring them back at the end of it. This will do that for you.
+//I'm going to comment out the if/else statements in this because the circumstances in which they'd come up seem pretty unlikely and unnecessary if you're just going to be making a simple ghost. You can just leave this function alone and move on if you want. However, if you do want to use them, just uncomment the lines by deleting the slashes and fill in the info as you need.
+
+//*********************Advanced User Info*******************************
+//You can put if statements in OnSurfaceRestore to make exceptions for certain poses, or to make sure that once they're in a certain pose, they stay in that pose. For example, if you turn my Hunter and Smoker ghost into eggplants, there's a check for the their eggplant pose numbers to make sure they STAY eggplants when OnSurfaceRestore is called.
+//You can also use OnSurfaceRestore to clean up things that might be left on the screen, primarily from using p[number]\s[] to call up other objects or characters. Just make sure to add a p[number]\s[-1] to OnSurfaceRestore, and that should get rid of it each time the ghost cleans itself up.
+//***********************************************************************
+
+OnSurfaceRestore
+ {
+ 	//if reference0 == 4 || reference0 == 6 //This is checking what poses they are in. This looks to see if Girl is in pose 4 or pose 6, since she is reference0.
+ 	//{
+ 	//"\1\s[10]You're in a sad pose.\w8\0\s[0]I'll go back to normal then.\e"
+ 	//}
+ 	//elseif reference1 == 14 || reference1 == 16 //This is doing the same but for Triangle, since he's reference1. It looks to see if he's in pose 14 or post 16.
+ 	//{
+ 	//"\0\s[0]You look sad.\w8\1\s[10]I'll go back to normal.\e"
+ 	//}
+ 	//else
+ 	//{
+	if creepymode{
+	
+		"\0\s[666]\1\s[10]\e"
+	
+	
+	} else {
+	
+		"\0\s[0]\1\s[10]\e"
+	
+	}
+	
+	//}
+ }
+
+ 
+ //--OnKeyPress
+ //This defines the hotkeys your ghost will use. You can change these to whatever you want, but I don't really know why you would. I'd just leave this alone. Advanced Users can add new hotkeys attached to whatever function if you want.
+ 
+OnKeyPress
+{
+	if reference0 == "t"
+	{
+	OnAiTalk
+	}
+	elseif reference0 == "r"
+	{
+	OnLastTalk
+	}
+	elseif reference0 == "f1"
+	{
+	"\![open,readme]"
+	}
+	//TODO: open alt file instead of the readme in creepymode 
+}

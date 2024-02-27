@@ -1,0 +1,434 @@
+//File for Aurora's Shop and Collectibles Menus
+
+//-----------------------------------Shop----------------------------------
+OnShopMenu{
+
+	"\_qHere, you can buy things with your AP!\n\n[half]"
+	--
+	"You've got %(AP) AP.\n\n[half]"
+	"You have %(AP) AP.\n\n[half]"
+	--
+	"View....\n/
+	\![*]\q[Balloons,OnShopBalloons]\n/
+	\![*]\q[Accessories,shopAccessories]\n/
+	\![*]\q[Shells,shopShells]\n/
+	\![*]\q[Items,OnShopItems]\n\n[half]"
+	--
+	"\![*]\q[Back to the main menu,OnBACKTOMENU]\e"
+
+}
+
+
+
+OnShopBalloons{
+
+
+	"\_q\b2Here are all the balloons you can buy!\n\n[half]"
+	--
+	"You've got %(AP) AP.\n\n[half]"
+	"You have %(AP) AP.\n\n[half]"
+	--
+	if ASEARCH("orangeballoon", purchasedItems) == -1 {
+		"\![*]\q[Orange Balloon: 30 AP,OnPurchasedBalloon,orangeballoon,30]\n"
+	} else {
+		"\f[strike,1]\![*]Orange Balloon: 30 AP\f[strike,0]\n"
+	}
+	--
+	if ASEARCH("purpleballoon", purchasedItems) == -1 {
+		"\![*]\q[Purple Balloon: 30 AP,OnPurchasedBalloon,purpleballoon,30]\n"
+	} else {
+		"\f[strike,1]\![*]Purple Balloon: 30 AP\f[strike,0]\n"
+	}
+	--
+	if ASEARCH("greenballoon", purchasedItems) == -1 {
+		"\![*]\q[Green Balloon: 30 AP,OnPurchasedBalloon,greenballoon,30]\n"
+	} else {
+		"\f[strike,1]\![*]Green Balloon: 30 AP\f[strike,0]\n"
+	}
+	--
+	if ASEARCH("pinkballoon", purchasedItems) == -1 {
+		"\![*]\q[Pink Balloon: 30 AP,OnPurchasedBalloon,pinkballoon,30]\n"
+	} else {
+		"\f[strike,1]\![*]Pink Balloon: 30 AP\f[strike,0]\n"
+	}
+	--
+	if ASEARCH("grayballoon", purchasedItems) == -1 {
+		"\![*]\q[Gray Balloon: 30 AP,OnPurchasedBalloon,grayballoon,30]\n"
+	} else {
+		"\f[strike,1]\![*]Gray Balloon: 30 AP\f[strike,0]\n"
+	}
+	--
+	if ASEARCH("cyanballoon", purchasedItems) == -1 {
+		"\![*]\q[Cyan Balloon: 30 AP,OnPurchasedBalloon,cyanballoon,30]\n"
+	} else {
+		"\f[strike,1]\![*]Cyan Balloon: 30 AP\f[strike,0]\n"
+	}
+	--
+	"\n[half]\0\s[0]Back to...\n\n[half]"
+	--
+	"\![*]\q[Shop menu,OnShopMenu]\n/
+	\![*]\q[Main menu,OnBACKTOMENU]\e"
+
+}
+
+OnPurchasedBalloon{
+
+	//"%reference[0], %reference[1]"
+	
+	"\_q"
+	--
+	
+	if AP < reference[1] {
+	
+		"\0\s[0]You don't have enough AP for that."
+	
+	} elseif reference[0] == "orangeballoon" {
+	
+		"\0\s[0]Purchased the orange balloon."
+		AP-=reference[1]
+		purchasedItems = (purchasedItems,reference[0])
+	
+	}elseif reference[0] == "purpleballoon" {
+	
+		"\0\s[0]Purchased the purple balloon."
+		AP-=reference[1]
+		purchasedItems = (purchasedItems,reference[0])
+	
+	}elseif reference[0] == "greenballoon" {
+	
+		"\0\s[0]Purchased the green balloon."
+		AP-=reference[1]
+		purchasedItems = (purchasedItems,reference[0])
+	
+	}elseif reference[0] == "pinkballoon" {
+	
+		"\0\s[0]Purchased the pink balloon."
+		AP-=reference[1]
+		purchasedItems = (purchasedItems,reference[0])
+	
+	}elseif reference[0] == "grayballoon" {
+	
+		"\0\s[0]Purchased the gray balloon."
+		AP-=reference[1]
+		purchasedItems = (purchasedItems,reference[0])
+	
+	}elseif reference[0] == "cyanballoon" {
+	
+		"\0\s[0]Purchased the cyan balloon."
+		AP-=reference[1]
+		purchasedItems = (purchasedItems,reference[0])
+	
+	}
+	
+	--
+	"\x\_q"
+	--
+	OnShopBalloons
+
+
+}
+
+Select.shopAccessories{
+
+	"\_q\b2"
+	--
+	"Coming soon...\n\n[half]"
+	--
+	"\0\s[0]Back to...\n\n[half]"
+	--
+	"\![*]\q[Shop menu,OnShopMenu]\n/
+	\![*]\q[Main menu,OnBACKTOMENU]\e"
+
+}
+
+Select.shopShells{
+
+	"\_q\b2"
+	--
+	"Coming soon...\n\n[half]"
+	--
+	"\0\s[0]Back to...\n\n[half]"
+	--
+	"\![*]\q[Shop menu,OnShopMenu]\n/
+	\![*]\q[Main menu,OnBACKTOMENU]\e"
+
+}
+
+OnShopItems{
+
+	"\_q\b2Here are all the items you can buy!\n\n[half]"
+	--
+	"You've got %(AP) AP.\n\n[half]"
+	"You have %(AP) AP.\n\n[half]"
+	--
+	"\![*]\q[Cake JPG: 15 AP,OnPurchasedItem,cakejpg,15]\n/
+	\![*]\q[Plush Cat Keychain: 20 AP,OnPurchasedItem,catkey,20]\n/
+	\![*]\q[Knockoff Tamagotchi: 30 AP,OnPurchasedItem,tamagotchi,30]\n"
+	--
+	"\n[half]\0\s[0]Back to...\n\n[half]"
+	--
+	"\![*]\q[Shop menu,OnShopMenu]\n/
+	\![*]\q[Main menu,OnBACKTOMENU]\e"
+
+}
+
+OnPurchasedItem{
+
+	"\_q"
+	--
+
+	if AP < reference[1] {
+	
+		"\0\s[0]You don't have enough AP for that."
+	
+	} elseif reference[0] == "cakejpg" {
+	
+		"\0\s[0]Purchased a cake JPG."
+		AP-=reference[1]
+		purchasedItems = (purchasedItems,reference[0])
+	
+	}elseif reference[0] == "catkey" {
+	
+		"\0\s[0]Purchased a plush cat keychain."
+		AP-=reference[1]
+		purchasedItems = (purchasedItems,reference[0])
+	
+	}elseif reference[0] == "tamagotchi" {
+	
+		"\0\s[0]Purchased a knockoff Tamagotchi."
+		AP-=reference[1]
+		purchasedItems = (purchasedItems,reference[0])
+	
+	}
+	--
+	"\x\_q"
+	--
+	OnShopItems
+}
+
+//--------------------------------Collectibles-----------------------------
+
+OnCollectiblesMenu{
+
+	"\_qHere's all the stuff you've bought already!\n\n"
+	--
+	"View....\n/
+	\![*]\q[Balloons,OnBagBalloons]\n/
+	\![*]\q[Accessories,bagAccessories]\n/
+	\![*]\q[Shells,bagShells]\n/
+	\![*]\q[Items,OnBagItems]\n\n[half]"
+	--
+	"\![*]\q[Back to the main menu,OnBACKTOMENU]\e"
+	--
+	"\e"
+	
+
+}
+
+OnBagBalloons{
+
+	"\0\s[0]\b2\_qClick a balloon to swap to it. The balloon I'm using is bolded.\n\n"
+	currBalloon = SHIORI3FW.BalloonName
+	_balloonRecognized = 0
+	--
+	//default balloon always avaliable
+	if currBalloon == "Aurora.EXE Balloon" {
+		"\f[bold,1]\![*]Default Balloon\f[bold,0]\n"
+		_balloonRecognized = 1
+	} else {
+		"\![*]\q[Default Balloon,script:\![change,balloon,Aurora.EXE Balloon\]]\n"
+	}
+	--
+	if ASEARCH("orangeballoon", purchasedItems) != -1 {
+	
+		if currBalloon == "Aurora.EXE Orange Balloon" {
+			"\f[bold,1]\![*]Orange Balloon\f[bold,0]\n"
+			_balloonRecognized = 1
+		} else {
+			"\![*]\q[Orange Balloon,script:\![change,balloon,Aurora.EXE Orange Balloon\]]\n"
+		}
+	} 
+	--
+	if ASEARCH("purpleballoon", purchasedItems) != -1 {
+	
+		if currBalloon == "Aurora.EXE Purple Balloon" {
+			"\f[bold,1]\![*]Purple Balloon\f[bold,0]\n"
+			_balloonRecognized = 1
+		} else {
+			"\![*]\q[Purple Balloon,script:\![change,balloon,Aurora.EXE Purple Balloon\]]\n"
+		}
+	} 
+	--
+	if ASEARCH("greenballoon", purchasedItems) != -1 {
+	
+		if currBalloon == "Aurora.EXE Green Balloon" {
+			"\f[bold,1]\![*]Green Balloon\f[bold,0]\n"
+			_balloonRecognized = 1
+		} else {
+			"\![*]\q[Green Balloon,script:\![change,balloon,Aurora.EXE Green Balloon\]]\n"
+		}
+	} 
+	--
+	if ASEARCH("pinkballoon", purchasedItems) != -1 {
+	
+		if currBalloon == "Aurora.EXE Pink Balloon" {
+			"\f[bold,1]\![*]Pink Balloon\f[bold,0]\n"
+			_balloonRecognized = 1
+		} else {
+			"\![*]\q[Pink Balloon,script:\![change,balloon,Aurora.EXE Pink Balloon\]]\n"
+		}
+	} 
+	--
+	if ASEARCH("grayballoon", purchasedItems) != -1 {
+	
+		if currBalloon == "Aurora.EXE Gray Balloon" {
+			"\f[bold,1]\![*]Gray Balloon\f[bold,0]\n"
+			_balloonRecognized = 1
+		} else {
+			"\![*]\q[Gray Balloon,script:\![change,balloon,Aurora.EXE Gray Balloon\]]\n"
+		}
+	} 
+	--
+	if ASEARCH("cyanballoon", purchasedItems) != -1 {
+	
+		if currBalloon == "Aurora.EXE Cyan Balloon" {
+			"\f[bold,1]\![*]Cyan Balloon\f[bold,0]\n"
+			_balloonRecognized = 1
+		} else {
+			"\![*]\q[Cyan Balloon,script:\![change,balloon,Aurora.EXE Cyan Balloon\]]\n"
+		}
+	} 
+	--
+	//for user selected balloon
+	if !_balloonRecognized {
+	
+		"\f[bold,1]\![*]\q[Other Balloon,OnOtherBalloon]\f[bold,0]\n"
+	
+	} else {
+	
+		"\![*]\q[Other Balloon,OnOtherBalloon]\n"
+	
+	}
+	
+	
+	
+	--
+	"\n[half]\0\s[0]Back to...\n\n[half]"
+	--
+	"\![*]\q[Collectibles menu,OnCollectiblesMenu]\n/
+	\![*]\q[Main menu,OnBACKTOMENU]\e"
+	
+
+
+}
+
+
+OnBalloonChange{
+
+	OnBagBalloons
+	
+}
+
+OnOtherBalloon {
+
+	if reference[0] == "" {
+		"\0\s[0]If you don't like any of my balloons, you can swap to one of your other installed ones.\w8 Some text and menus might show up weird, as a disclaimer.\w8 Give me the balloon's name.\w8\![open,inputbox,OnOtherBalloon,-1]"
+	} else {
+		"\![change,balloon,%(reference0)]Umm... I can't find %(reference0). Are you spelling it correctly? Special characters and spaces count!\![open,inputbox,OnOtherBalloon,-1]"
+	}
+
+}
+
+Select.bagAccessories{
+
+	"\_q\b2"
+	--
+	"Coming soon...\n\n[half]"
+	--
+	"\n[half]\0\s[0]Back to...\n\n[half]"
+	--
+	"\![*]\q[Collectibles menu,OnCollectiblesMenu]\n/
+	\![*]\q[Main menu,OnBACKTOMENU]\e"
+
+}
+
+Select.bagShells{
+
+	"\_q\b2"
+	--
+	"Coming soon...\n\n[half]"
+	--
+	"\n[half]\0\s[0]Back to...\n\n[half]"
+	--
+	"\![*]\q[Collectibles menu,OnCollectiblesMenu]\n/
+	\![*]\q[Main menu,OnBACKTOMENU]\e"
+
+}
+
+OnBagItems{
+
+	"\_q\b2"
+	_s=""
+	--
+	"\0\s[0]Click an item to use it.\n\n"
+	--
+	"Gifts:\n"
+	--
+	_num = RE_ASEARCHEX("cakejpg", purchasedItems)
+	if _num != IARRAY {
+	
+		_amnt = ARRAYSIZE(_num)
+		if _amnt != 1; _s = "s"
+		"\![*]\q[Cake JPG%(_s): %(_amnt),OnUseItem,cakejpg,%(_num[0])]\n"
+	}
+	--
+	_num = RE_ASEARCHEX("catkey", purchasedItems)
+	if _num != IARRAY {
+	
+		_amnt = ARRAYSIZE(_num)
+		if _amnt != 1; _s = "s"
+		"\![*]\q[Plush Cat Keychain%(_s): %(_amnt),OnUseItem,catkey,%(_num[0])]\n"
+	}
+	--
+	_num = RE_ASEARCHEX("tamagotchi", purchasedItems)
+	if _num != IARRAY {
+	
+		_amnt = ARRAYSIZE(_num)
+		if _amnt != 1; _s = "s"
+		"\![*]\q[Knockoff Tamagotchi%(_s): %(_amnt),OnUseItem,tamagotchi,%(_num[0])]\n"
+	}
+	--
+	if _num == IARRAY{
+		"\![*]Nothing yet.\n"
+	}
+	--
+	"\n[half]\0\s[0]Back to...\n\n[half]"
+	--
+	"\![*]\q[Collectibles menu,OnCollectiblesMenu]\n/
+	\![*]\q[Main menu,OnBACKTOMENU]\e"
+
+}
+
+OnUseItem{
+
+	if reference0 == "cakejpg"{
+	
+		"\0\s5Thank you!!!\w8\n\n[half][She shoves the JPG in her mouth, somehow]\w8\n\n[half]Yum, %(cakeflavor)!\x"
+		friendship+=10
+	
+	}elseif reference0 == "catkey"{
+	
+		"\0\s6Thank you!!\w8 This is super cute!\w8\n\n[half][She squishes the keychain intently]\x"
+		friendship+=15
+	
+	}elseif reference0 == "tamagotchi"{
+	
+		"\0\s5Thank you!!\w8 I hope I hatch a cute pet!\w8\n\n[half][She tucks the toy in a... pocket?]\x"
+		friendship+=30
+	
+	}
+	purchasedItems[reference1] = IARRAY
+	--
+	OnBagItems
+
+}
