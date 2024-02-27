@@ -8,7 +8,7 @@ OnMiscMenu{
 	"\![*]\q[Stats,OnStatDisplay]\n/
 	\![*]\q[Mameshiba,mameshibatalk]\n/
 	\![*]\q[8ball,On8balltime,2]\n/
-	\f[disable]\![*]\q Weather (Temporarily unavailable)\n\n[half]\f[default]"
+	\f[disable]\![*]\_qWeather (Temporarily unavailable)\n\n[half]\f[default]"
 	--
 	"\![*]\q[Back to the main menu,OnBACKTOMENU]\e"
 
